@@ -11,8 +11,7 @@ pool:
 
 steps:
 
-- script: |
-    - task: Bash@3
+- task: Bash@3
   inputs:
     targetType: 'inline'
     script: 'mkdir nesasm && git clone https://github.com/camsaul/nesasm.git
