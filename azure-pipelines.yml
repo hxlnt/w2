@@ -49,4 +49,4 @@ steps:
   inputs:
     failOnStderr: true
     script: exit 1
-  condition: ne($STATUS, 'pass 2')
+  condition: ne($(status), 'pass 2')
