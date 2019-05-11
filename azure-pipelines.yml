@@ -30,15 +30,15 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      'touch assembly-status.txt && nesasm/nesasm w2.asm > cat assembly-status.txt'
+      'nesasm/nesasm w2.asm'
     failOnStderr: true
 
 - task: Bash@3
   displayName: 'Check assembly status'
   inputs:
     targetType: 'inline'
-    script: 'status=`tail -1 assembly-status.txt`
-      variables[''status'']=`tail -1 assembly-status.txt`
+    script: 'status=`nesasm/nesasm w2.asm | grep "pass 2"`
+      variables[''status'']=`nesasm/nesasm w2.asm | grep "pass 2"`
       echo $status
       echo variables[''status'']
       
