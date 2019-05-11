@@ -32,4 +32,9 @@ steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script: 'nesasm/source/nesasm3'
+    script: 'ls && cd .. && ls'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'nesasm/nesasm3'
