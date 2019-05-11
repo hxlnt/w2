@@ -45,7 +45,7 @@ steps:
 
 - task: Bash@3
   displayName: 'Check for successful assembly'
-  condition: not(always(), eq($(status), 'pass 2'))
+  condition: ne($(status), 'pass 2')
   inputs:
     failOnStderr: true
     script: exit 1
