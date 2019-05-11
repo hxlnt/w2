@@ -12,8 +12,7 @@ pool:
 steps:
 
 - script: |
-    mkdir nesasm && git clone https://github.com/camsaul/nesasm.git
-    cd source && make && sudo make install
+    mkdir nesasm && git clone https://github.com/camsaul/nesasm.git && cd source && make && sudo make install
   displayName: 'Set up nesasm3'
 
 # Copy Files
