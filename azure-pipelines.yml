@@ -39,4 +39,3 @@ steps:
 - task: Bash@3
   displayName: 'Check for successful assembly'
   condition: and(always(), eq(variables['status'], 'NES Assembler (v3.1)\n\npass 1\npass 2\n'))
-  failOnStderr: true
