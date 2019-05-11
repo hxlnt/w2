@@ -46,5 +46,6 @@ steps:
 - task: Bash@3
   displayName: 'Check for successful assembly'
   inputs:
+    targetType: 'inline'
     script: 'echo $(status)'
   # condition: ne($(status), 'pass 2')
