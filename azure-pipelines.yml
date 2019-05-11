@@ -37,4 +37,4 @@ steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script: 'nesasm/nesasm3'
+    script: 'nesasm/nesasm ../w2.asm -s'
