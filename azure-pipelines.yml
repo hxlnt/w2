@@ -30,7 +30,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      'nesasm/nesasm w2.asm > cat assembly-status.txt'
+      'touch assembly-status.tx && nesasm/nesasm w2.asm > cat assembly-status.txt'
     failOnStderr: true
 
 - task: Bash@3
