@@ -37,10 +37,8 @@ steps:
   inputs:
     targetType: 'inline'
     script: 'status=`nesasm/nesasm w2.asm | grep "pass 2"`
-      variables[''status'']=`nesasm/nesasm w2.asm | grep "pass 2"`
-      echo $status
-      echo variables[''status'']
-      
+      variables['status']=`nesasm/nesasm w2.asm | grep "pass 2"`
+      echo variables['status']
       # Use the environment variables input below to pass secret variables to this script'
 
 - task: Bash@3
