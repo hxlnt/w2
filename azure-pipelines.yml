@@ -32,7 +32,7 @@ steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script: 'ls && cd .. && ls'
+    script: 'cd nesasm && ls'
 
 - task: Bash@3
   inputs:
