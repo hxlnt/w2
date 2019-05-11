@@ -12,8 +12,8 @@ resources:
     name: 'camsaul/nesasm'
     endpoint: 'hxlnt'
 
-# variables:
-#   status: fail
+variables:
+  - status: fail
 
 steps:
 - task: Bash@3
@@ -38,12 +38,14 @@ steps:
 - task: Bash@3
   displayName: 'Check assembly status'
   inputs:
-    status: $(status)
     targetType: 'inline'
-    script: 'echo ##vso[task.setvariable variable=status]pass 2'
+    script: |
+      echo $(status)
+      echo '##vso[task.setvariable variable=status]pass 2'
+      
 
 - task: Bash@3
   displayName: 'Check for successful assembly'
   inputs:
-    script: 'echo $STATUS'
+    script: 'echo $(status)'
   # condition: ne($(status), 'pass 2')
