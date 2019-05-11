@@ -10,28 +10,19 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-
-- task: CmdLine@2
+- task: Bash@3
   inputs:
-    script: 'git clone https://github.com/camsaul/nesasm'
-    failOnStderr: true
-  displayName: 'Clone nesasm3'
+    targetType: 'inline'
+    script: 'git checkout https://github.com/camsaul/nesasm.git
+      
+      # Use the environment variables input below to pass secret variables to this script'
 
-- task: CmdLine@2
+- task: Bash@3
   inputs:
-    script: 'cd source && make && sudo make install'
-    failOnStderr: true
-  displayName: 'Install nesasm3'
+    targetType: 'inline'
+    script: 'cd nesasm/source && make && sudo make install'
 
-# Copy Files
-# Copy files from source folder to target folder using match patterns (The match patterns will only match file paths, not folder paths)
-- task: CopyFiles@2
+- task: Bash@3
   inputs:
-    targetFolder: $(Build.ArtifactStagingDirectory)
-    cleanTargetFolder: true
-    overWrite: true
-
-- script: |
-    nesasm3 w2.asm
-  displayName: 'Run nesasm3'
-
+    targetType: 'inline'
+    script: 'nesasm3'
