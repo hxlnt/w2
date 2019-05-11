@@ -40,12 +40,12 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      '$(status)=`nesasm/nesasm w2.asm | grep "pass 2"`
-      echo $(status)'
+      'variables['status']=`nesasm/nesasm w2.asm | grep "pass 2"`
+      echo variables['status']'
 
 - task: Bash@3
   displayName: 'Check for successful assembly'
-  condition: ne($(status), 'pass 2')
+  condition: ne(variables['status'], 'pass 2')
   inputs:
     failOnStderr: true
     script: exit 1
