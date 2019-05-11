@@ -41,11 +41,12 @@ steps:
     targetType: 'inline'
     script: |
       echo $(status)
-      echo '##vso[task.setvariable variable=status]pass 2'
+      echo '##vso[task.setvariable variable=status]`nesasm/nesasm w2.asm | grep 'pass 2'`'
       
 - task: Bash@3
   displayName: 'Check for successful assembly'
   inputs:
     targetType: 'inline'
-    script: 'echo $(status)'
-  # condition: ne($(status), 'pass 2')
+    #script: 'echo $(status)'
+    script: 'exit 1'
+  condition: $[ne($(status), 'pass 2')]
