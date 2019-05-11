@@ -9,11 +9,18 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+resources:
+  repositories:
+  - repository: 'nesasm'
+    type: 'github'
+    name: 'camsaul/nesasm'
+    endpoint: 'hxlnt'
+
 steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script: 'git checkout https://github.com/camsaul/nesasm.git
+    script: 'git clone https://github.com/camsaul/nesasm.git
       
       # Use the environment variables input below to pass secret variables to this script'
 
