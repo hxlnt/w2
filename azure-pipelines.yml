@@ -18,23 +18,20 @@ resources:
 
 steps:
 - task: Bash@3
+  displayName: Get nesasm assembler source
   inputs:
     targetType: 'inline'
     script: 'git clone https://github.com/camsaul/nesasm.git'
       
-      # Use the environment variables input below to pass secret variables to this script'
-
 - task: Bash@3
+  displayName: 'Install nesasm assembler'
   inputs:
     targetType: 'inline'
     script: 'cd nesasm/source && make && sudo make install'
 
 - task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: 'ls && cd .. && ls'
-
-- task: Bash@3
+  displayName: 'Assemble source file'
   inputs:
     targetType: 'inline'
     script: 'nesasm/nesasm w2.asm -s'
+    failOnStderr: true
