@@ -11,16 +11,14 @@ pool:
 
 steps:
 
-- task: Bash@3
+- task: CmdLine@2
   inputs:
-    targetType: 'inline'
     script: 'mkdir nesasm && git clone https://github.com/camsaul/nesasm.git'
     failOnStderr: true
   displayName: 'Clone nesasm3'
 
-- task: Bash@3
+- task: CmdLine@2
   inputs:
-    targetType: 'inline'
     script: 'cd source && make && sudo make install'
     failOnStderr: true
   displayName: 'Install nesasm3'
