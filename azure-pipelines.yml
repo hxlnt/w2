@@ -1,7 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
 
 trigger:
 - master
@@ -18,19 +14,19 @@ resources:
 
 steps:
 - task: Bash@3
-  displayName: Get nesasm assembler source
+  displayName: Get NES assembler source
   inputs:
     targetType: 'inline'
     script: 'git clone https://github.com/camsaul/nesasm.git'
       
 - task: Bash@3
-  displayName: 'Install nesasm assembler'
+  displayName: 'Install NES assembler'
   inputs:
     targetType: 'inline'
     script: 'cd nesasm/source && make && sudo make install'
 
 - task: Bash@3
-  displayName: 'Assemble source file'
+  displayName: 'Assemble source file (.NES ROM)'
   inputs:
     targetType: 'inline'
     script: 'nesasm/nesasm w2.asm -s'
