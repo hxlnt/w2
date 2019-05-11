@@ -31,11 +31,11 @@ steps:
     targetType: 'inline'
     script: |
       'nesasm/nesasm w2.asm > cat assembly-status.txt'
-      'export variables['status']=`cat assembly-status.txt`'
-      'echo status'
+      'status=`tail -1 assembly-status.txt`'
+      'echo $status'
       'echo variables['status']'
     failOnStderr: true
 
 - task: Bash@3
   displayName: 'Check for successful assembly'
-  condition: and(always(), eq(variables['status'], 'NES Assembler (v3.1)\n\npass 1\npass 2\n'))
+  condition: and(always(), eq(status, 'pass 2'))
