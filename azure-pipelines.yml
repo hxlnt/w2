@@ -25,23 +25,19 @@ steps:
     targetType: 'inline'
     script: 'cd nesasm/source && make && sudo make install'
 
-# - task: Bash@3
-#   displayName: 'Assemble source file (.NES ROM)'
-#   inputs:
-#     targetType: 'inline'
-#     script: |
-#       'nesasm/nesasm w2.asm > cat assembly-status.txt'
-#       'status=`tail -1 assembly-status.txt`'
-#       'variables['status']=`tail -1 assembly-status.txt`'
-#       'echo $status'
-#       'echo variables['status']'
-#     failOnStderr: true
-
 - task: Bash@3
+  displayName: 'Assemble source file (.NES ROM)'
   inputs:
     targetType: 'inline'
-    script: 'nesasm/nesasm w2.asm > cat assembly-status.txt
-      status=`tail -1 assembly-status.txt`
+    script: |
+      'nesasm/nesasm w2.asm > cat assembly-status.txt'
+    failOnStderr: true
+
+- task: Bash@3
+  displayName: 'Check assembly status'
+  inputs:
+    targetType: 'inline'
+    script: 'status=`tail -1 assembly-status.txt`
       variables[''status'']=`tail -1 assembly-status.txt`
       echo $status
       echo variables[''status'']
