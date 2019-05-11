@@ -1,0 +1,2 @@
+attractbg:
+    .db "ATTRACT"
