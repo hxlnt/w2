@@ -14,9 +14,16 @@ steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script: 'mkdir nesasm && git clone https://github.com/camsaul/nesasm.git && cd source && make && sudo make install'
+    script: 'mkdir nesasm && git clone https://github.com/camsaul/nesasm.git'
     failOnStderr: true
-  displayName: 'Set up nesasm3'
+  displayName: 'Clone nesasm3'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'cd source && make && sudo make install'
+    failOnStderr: true
+  displayName: 'Install nesasm3'
 
 # Copy Files
 # Copy files from source folder to target folder using match patterns (The match patterns will only match file paths, not folder paths)
