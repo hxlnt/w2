@@ -40,8 +40,8 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      'variables['status']=`nesasm/nesasm w2.asm | grep "pass 2"`
-      echo variables['status']'
+      'variables[''status'']=`nesasm/nesasm w2.asm | grep "pass 2"`
+      echo $variables[''status''']'
 
 - task: Bash@3
   displayName: 'Check for successful assembly'
