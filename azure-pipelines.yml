@@ -32,10 +32,11 @@ steps:
     script: |
       'nesasm/nesasm w2.asm > cat assembly-status.txt'
       'status=`tail -1 assembly-status.txt`'
+      'variables['status']=`tail -1 assembly-status.txt`'
       'echo $status'
       'echo variables['status']'
     failOnStderr: true
 
 - task: Bash@3
   displayName: 'Check for successful assembly'
-  condition: and(always(), eq(status, 'pass 2'))
+  condition: and(always(), eq(variables['status'], 'pass 2'))
