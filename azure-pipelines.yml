@@ -13,7 +13,7 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'mkdir nesasm && git clone https://github.com/camsaul/nesasm.git'
+    script: 'sudo git clone https://github.com/camsaul/nesasm.git'
     failOnStderr: true
   displayName: 'Clone nesasm3'
 
