@@ -43,7 +43,6 @@ steps:
       echo $(status)
       echo '##vso[task.setvariable variable=status]pass 2'
       
-
 - task: Bash@3
   displayName: 'Check for successful assembly'
   inputs:
