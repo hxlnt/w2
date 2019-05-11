@@ -14,8 +14,7 @@ steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script: 'mkdir nesasm && git clone https://github.com/camsaul/nesasm.git
-      cd source && make && sudo make install'
+    script: 'mkdir nesasm && git clone https://github.com/camsaul/nesasm.git && cd source && make && sudo make install'
     failOnStderr: true
   displayName: 'Set up nesasm3'
 
