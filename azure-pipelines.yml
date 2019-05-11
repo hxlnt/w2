@@ -12,7 +12,7 @@ resources:
     name: 'camsaul/nesasm'
     endpoint: 'hxlnt'
 
-  variables:
+variables:
   status: fail
 
 steps:
