@@ -12,6 +12,9 @@ resources:
     name: 'camsaul/nesasm'
     endpoint: 'hxlnt'
 
+variables:
+  status: fail
+
 steps:
 - task: Bash@3
   displayName: Get NES assembler source
@@ -36,11 +39,13 @@ steps:
   displayName: 'Check assembly status'
   inputs:
     targetType: 'inline'
-    script: 'status=`nesasm/nesasm w2.asm | grep "pass 2"`
-      variables['status']=`nesasm/nesasm w2.asm | grep "pass 2"`
-      echo variables['status']
-      # Use the environment variables input below to pass secret variables to this script'
+    script: |
+      '$(status)=`nesasm/nesasm w2.asm | grep "pass 2"`
+      echo $(status)'
 
 - task: Bash@3
   displayName: 'Check for successful assembly'
-  condition: and(always(), eq(variables['status'], 'pass 2'))
+  condition: not(always(), eq($(status), 'pass 2'))
+  inputs:
+    failOnStderr: true
+  script: exit 1
