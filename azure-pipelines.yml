@@ -29,8 +29,7 @@ steps:
   displayName: 'Assemble source file (.NES ROM)'
   inputs:
     targetType: 'inline'
-    script: |
-      'nesasm/nesasm w2.asm'
+    script: 'nesasm/nesasm w2.asm'
     failOnStderr: true
 
 - task: Bash@3
