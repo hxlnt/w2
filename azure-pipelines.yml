@@ -12,6 +12,9 @@ resources:
     name: 'camsaul/nesasm'
     endpoint: 'hxlnt'
 
+variables:
+  status: 'fail'
+
 steps:
 - task: Bash@3
   displayName: Get NES assembler source
@@ -29,5 +32,21 @@ steps:
   displayName: 'Assemble source file (.NES ROM)'
   inputs:
     targetType: 'inline'
-    script: 'nesasm/nesasm w2.asm -s'
+    script: 'nesasm/nesasm w2.asm'
     failOnStderr: true
+
+- task: Bash@3
+  displayName: 'Check assembly status'
+  inputs:
+    targetType: 'inline'
+    script: |
+      result=$(nesasm/nesasm w2.asm | grep error)
+      echo $result
+      echo "##vso[task.setvariable variable=status]$result"
+      
+- task: Bash@3
+  displayName: 'Check for assembly failure'
+  inputs:
+    targetType: 'inline'
+    script: exit 1
+  condition: contains(variables['status'], 'error')
