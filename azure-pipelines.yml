@@ -42,13 +42,11 @@ steps:
     script: |
       result=$(nesasm/nesasm w2.asm)
       echo $result
-      echo '##vso[task.setvariable variable=status]$result'
+      echo "##vso[task.setvariable variable=status]$result"
       
 - task: Bash@3
   displayName: 'Check for assembly failure'
   inputs:
     targetType: 'inline'
-    script: |
-      echo $(status)
-      exit 1
+    script: exit 1
   condition: contains(variables['status'], 'error(s)')
