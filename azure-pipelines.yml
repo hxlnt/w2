@@ -40,8 +40,8 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      echo $(status)
       result=$(nesasm/nesasm w2.asm)
+      echo $result
       echo '##vso[task.setvariable variable=status]$result'
       
 - task: Bash@3
