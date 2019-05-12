@@ -8,4 +8,4 @@
     .rsset $0000
 
     .rsset $6000
-    .include "game/wram.asm"
+    .include "game/ram.asm"
