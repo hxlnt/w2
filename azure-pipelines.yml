@@ -48,5 +48,7 @@ steps:
   inputs:
     targetType: 'inline'
     #script: 'echo $(status)'
-    script: 'exit 1'
+    script: |
+      echo $(status)
+      exit 1
   condition: ne(variables['status'], 'pass 2')
