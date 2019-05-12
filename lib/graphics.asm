@@ -177,8 +177,8 @@ ScrollYUp:
     LDA scroll_y
     CLC
     ADC scroll_speed
-    CMP #$EF
-    BCS ResetScrollUp
+    ;CMP #$EF
+    ;BCS ResetScrollUp
     STA scroll_y
     STA PPU_SCROLL
     RTS
@@ -186,8 +186,8 @@ ScrollYDown:
     LDA scroll_y
     SEC
     SBC scroll_speed
-    CMP #$01
-    BCC ResetScrollDown
+    ;CMP #$01
+    ;BCC ResetScrollDown
     STA scroll_y
     STA PPU_SCROLL
     RTS
