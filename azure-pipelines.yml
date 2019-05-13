@@ -45,7 +45,7 @@ steps:
       echo "##vso[task.setvariable variable=status]$result"
       
 - task: Bash@3
-  displayName: 'Check for assembly failure'
+  displayName: 'Fail build only if assembly fails'
   inputs:
     targetType: 'inline'
     script: exit 1
