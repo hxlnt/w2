@@ -1,0 +1,63 @@
+LoadBackground_Counter:
+    STX pointer_high
+    STY pointer_low
+    LDA PPU_STATUS
+    LDY #$00
+    LDA [pointer_low], y
+    STA PPU_ADDR
+    INY
+    LDA [pointer_low], y
+    STA PPU_ADDR
+    LDA displaycounter
+    AND #%10000000
+    LSR A
+    LSR A
+    LSR A
+    LSR A
+    LSR A
+    LSR A
+    LSR A
+    STA PPU_DATA
+    LDA displaycounter
+    AND #%01000000
+    LSR A
+    LSR A
+    LSR A
+    LSR A
+    LSR A
+    LSR A
+    STA PPU_DATA
+    LDA displaycounter
+    AND #%00100000
+    LSR A
+    LSR A
+    LSR A
+    LSR A
+    LSR A
+    STA PPU_DATA
+    LDA displaycounter
+    AND #%00010000
+    LSR A
+    LSR A
+    LSR A
+    LSR A
+    STA PPU_DATA
+    LDA displaycounter
+    AND #%00001000
+    LSR A
+    LSR A
+    LSR A
+    STA PPU_DATA
+    LDA displaycounter
+    AND #%00000100
+    LSR A
+    LSR A
+    STA PPU_DATA
+    LDA displaycounter
+    AND #%00000010
+    LSR A
+    STA PPU_DATA
+    LDA displaycounter
+    AND #%00000001
+    STA PPU_DATA
+    RTS
