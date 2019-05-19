@@ -13,7 +13,7 @@ resources:
     endpoint: 'hxlnt'
   - repository: 'jsnes'
     type: 'github'
-    name: 'bfirsch/jsnes'
+    name: 'bfirsh/jsnes'
     endpoint: 'hxlnt'
 
 variables:
@@ -59,7 +59,7 @@ steps:
   displayName: Get JSNES source
   inputs:
     targetType: 'inline'
-    script: 'git clone https://github.com/bfirsch/jsnes.git'
+    script: 'git clone https://github.com/bfirsh/jsnes.git'
 
 - task: Bash@3
   displayName: 'Install emulator'
