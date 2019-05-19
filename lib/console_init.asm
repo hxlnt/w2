@@ -12,6 +12,11 @@ Reset:
 Vblank1:
     BIT PPU_STATUS
     BPL Vblank1 
+BankSetup:
+    JSR ConfigWrite
+    LDA #$00
+    STA sourcebank
+    JSR PRGBankWrite
 ClearMem:
     LDA #$00 
     STA $0000, x
