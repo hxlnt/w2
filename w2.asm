@@ -13,7 +13,7 @@
 
     .rsset $6000
     .include "game/wram.asm"
-`
+
     .bank 0
     .org $8000            
     .include "lib/console_init.asm" 
@@ -33,6 +33,7 @@
     ;JSR LoadBackground_Array
     LDX #HIGH(attract_attr)
     LDY #NMTBL_TOP_LEFT
+    jsr DrawResetCount
     JSR LoadAttr_All
     JSR TurnScreenOn                        
 

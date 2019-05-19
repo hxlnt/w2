@@ -61,3 +61,28 @@ LoadBackground_Counter:
     AND #%00000001
     STA PPU_DATA
     RTS
+
+      
+DrawResetCount:
+  LDA resetflag
+  CMP #$AB
+  BNE DrawResetCountClear          
+  JMP DrawResetCountNumber   
+
+DrawResetCountClear:
+  LDA #$AB
+  STA resetflag
+  LDA #'0'
+  STA resetcounter
+DrawResetCountNumber:
+  LDA $2002
+  LDA #$20
+  STA $2006
+  LDA #$5D
+  STA $2006
+  LDA resetcounter
+  STA $2007
+  CLC
+  ADC #$01
+  STA resetcounter
+  RTS
