@@ -11,6 +11,10 @@ resources:
     type: 'github'
     name: 'camsaul/nesasm'
     endpoint: 'hxlnt'
+  - repository: 'jsnes'
+    type: 'github'
+    name: 'bfirsch/jsnes'
+    endpoint: 'hxlnt'
 
 variables:
   status: 'fail'
@@ -50,3 +54,15 @@ steps:
     targetType: 'inline'
     script: exit 1
   condition: contains(variables['status'], 'error')
+
+- task: Bash@3
+  displayName: Get JSNES source
+  inputs:
+    targetType: 'inline'
+    script: 'git clone https://github.com/bfirsch/jsnes.git'
+
+- task: Bash@3
+  displayName: 'Install emulator'
+  inputs:
+    targetType: 'inline'
+    script: 'cd jsnes && npm install jsnes'
