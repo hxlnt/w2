@@ -11,10 +11,6 @@ resources:
     type: 'github'
     name: 'camsaul/nesasm'
     endpoint: 'hxlnt'
-  - repository: 'jsnes'
-    type: 'github'
-    name: 'bfirsh/jsnes'
-    endpoint: 'hxlnt'
 
 variables:
   status: 'fail'
