@@ -56,13 +56,7 @@ steps:
   condition: contains(variables['status'], 'error')
 
 - task: Bash@3
-  displayName: Get JSNES source
-  inputs:
-    targetType: 'inline'
-    script: 'git clone https://github.com/bfirsh/jsnes.git'
-
-- task: Bash@3
   displayName: 'Install emulator'
   inputs:
     targetType: 'inline'
-    script: 'cd jsnes && npm install jsnes'
+    script: 'npm install jsnes'
