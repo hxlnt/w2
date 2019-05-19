@@ -20,21 +20,20 @@
     .include "game/init.asm"
 
     JSR TurnScreenOff
+    
     LDX #HIGH(attract_pal)
     LDY #PALETTE_BG
     JSR LoadPalette_All
 
-    ;LDX #HIGH(attract_bg)
-    ;LDY #NMTBL_TOP_LEFT
-    ;JSR LoadBackground_All
+    LDX #HIGH(attract_bg)
+    LDY #NMTBL_TOP_LEFT
+    JSR LoadBackground_All
 
-    ;LDX #HIGH(end_txt)
-    ;LDY #LOW(end_txt)
-    ;JSR LoadBackground_Array
     LDX #HIGH(attract_attr)
     LDY #NMTBL_TOP_LEFT
-    jsr DrawResetCount
     JSR LoadAttr_All
+
+    jsr DrawResetCount
     JSR TurnScreenOn                        
 
 GameLoop:                               ;;;;;; Main game loop
