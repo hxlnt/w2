@@ -47,6 +47,7 @@ LoadBackground_Popcorn:             ;  Untested subroutine
     LDA popcorn_index
     CLC
     ADC #$03
+    AND #%00011111
     TAY
     LDA [pointer_low], y
     STA PPU_DATA
@@ -76,7 +77,8 @@ LoadBackground_Array:
     INY
     LDA [pointer_low], y
     CLC
-    ADC #$03                        ;  Add 3 to accommodate for the fact that Y
+    ADC #$06                        ;  Add 2 to accommodate for the fact that Y
+    AND #%00011111
     STA msg_end                     ;  already equals 2
     INY
 LoadBackground_ArrayLoop:
