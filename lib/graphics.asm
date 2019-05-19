@@ -25,11 +25,13 @@ LoadBackground_Column:              ;  Loads one column of graphics
 LoadBackground_Row:
     RTS
 
-LoadBackground_Popcorn:             ;  Untested subroutine
+LoadBackground_Patch:             ;  Untested subroutine
+    LDA isArrayPatch
+    BEQ LoadBackground_PatchDone
     LDA framecounter
     AND #%00000111
     CMP #%00000111
-    BNE LoadBackground_PopcornSkip
+    BNE LoadBackground_PatchSkip
     STX pointer_high
     STY pointer_low
     LDA PPU_STATUS
@@ -39,29 +41,29 @@ LoadBackground_Popcorn:             ;  Untested subroutine
     INY
     LDA [pointer_low], y
     CLC
-    ADC popcorn_index
+    ADC patch_index
     STA PPU_ADDR
     INY
     LDA [pointer_low], y
-    STA popcorn_length
-    LDA popcorn_index
+    AND #%0001111
+    STA patch_length
+    LDA patch_index
     CLC
     ADC #$03
-    AND #%00011111
     TAY
     LDA [pointer_low], y
     STA PPU_DATA
-    LDX popcorn_index
+    LDA patch_length
+    CMP patch_index
+    BEQ LoadBackground_PatchDone
+    LDX patch_index
     INX
-    STX popcorn_index
-    LDA popcorn_length
-    CMP popcorn_index
-    BEQ LoadBackground_PopcornDone
+    STX patch_index
     RTS
-LoadBackground_PopcornDone:
+LoadBackground_PatchDone:
     LDA #$00
-    STA isArrayPopcorn
-LoadBackground_PopcornSkip:
+    STA isArrayPatch
+LoadBackground_PatchSkip:
     RTS
 
 LoadBackground_Array:

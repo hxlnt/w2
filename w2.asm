@@ -71,9 +71,10 @@ NMI:                                    ;;;;;; NMI
     TYA
     PHA
     JSR Counter
+NMIPatch:
     LDX #HIGH(end_txt)
     LDY #LOW(end_txt)
-    JSR LoadBackground_Popcorn
+    JSR LoadBackground_Patch
 NMIDone:  
     JSR Scroll
     ;JSR MUSIC_PLAY                              

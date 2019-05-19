@@ -25,6 +25,6 @@ scroll_y        .rs 1
 scroll_speed    .rs 1               ;  Stores X- or Y-scroll speed during calculations
 
 msg_end         .rs 1               ;  Number of background tiles to be loaded simulatenously
-isArrayPopcorn  .rs 1               ;  True if array should pop in one tile at a time
-popcorn_index   .rs 1               ;  Index in dialog row
-popcorn_length  .rs 1
+isArrayPatch  .rs 1               ;  True if array should pop in one tile at a time
+patch_index   .rs 1               ;  Index in dialog row
+patch_length  .rs 1
