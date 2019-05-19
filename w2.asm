@@ -22,7 +22,7 @@
     JSR TurnScreenOff
     
     LDX #HIGH(attract_pal)
-    LDY #PALETTE_BG
+    LDY #LOW(attract_pal)
     JSR LoadPalette_All
 
     LDX #HIGH(attract_bg)

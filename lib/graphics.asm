@@ -98,7 +98,8 @@ LoadPalette_All:
     LDA PPU_STATUS   
     LDA #$3F    
     STA PPU_ADDR   
-    STY PPU_ADDR
+    LDA #$00
+    STA PPU_ADDR
     STX pointer_high
 LoadPalette_BGLoop:
     LDA [pointer_low], y
