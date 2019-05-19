@@ -50,3 +50,9 @@ steps:
     targetType: 'inline'
     script: exit 1
   condition: contains(variables['status'], 'error')
+
+- task: Bash@3
+  displayName: 'Install emulator'
+  inputs:
+    targetType: 'inline'
+    script: 'npm install jsnes'
