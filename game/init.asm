@@ -4,10 +4,10 @@ AssignValues:
     STA framecounter
     STA gamestate
     STA scroll
-    STA popcorn_index
+    STA patch_index
     LDA #$01
-    STA isArrayPopcorn
-   ; STA popcorn_length
+    STA isArrayPatch
+   ; STA patch_length
 
 InitializeAudio:
     LDA #$00
