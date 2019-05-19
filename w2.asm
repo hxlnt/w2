@@ -50,6 +50,7 @@ GameLoop:                               ;;;;;; Main game loop
     JMP GameLoop
 
     .include "lib/counters.asm"
+    .include "lib/wram.asm"
 
     .bank 1                             ;;;;;; Audio
     .org $A000
