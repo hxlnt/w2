@@ -60,4 +60,4 @@ steps:
       sudo add-apt-repository ppa:c.falco/mame
       sudo apt-get update
       sudo apt-get install mame
-      mame w2.nes -str 6
+      ./mame64 w2.nes -str 6
