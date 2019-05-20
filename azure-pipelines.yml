@@ -61,6 +61,6 @@ steps:
       sudo apt-get update
       sudo apt-get install mame
       dpkg -L mame
-      mame
-      mame w2.nes -str 6
-      mame64 ~/w2.nes -str 6
+      which mame
+      ~/mame w2.nes -str 6
+      ~/mame64 ~/w2.nes -str 6
