@@ -58,9 +58,6 @@ steps:
     script: |
       sudo rm -f /etc/apt/sources.list.d/sdlmame4ubuntu.*
       sudo add-apt-repository ppa:c.falco/mame
-      sudo apt-get update
-      sudo apt-get install mame
-      dpkg -L mame
-      which mame
-      ~/mame w2.nes -str 6
-      ~/mame64 ~/w2.nes -str 6
+      sudo apt-get update -y
+      sudo apt-get install mame -y
+      mame
