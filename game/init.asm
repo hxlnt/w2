@@ -3,11 +3,16 @@ AssignValues:
     LDA #$00
     STA framecounter
     STA gamestate
-    STA scroll
     STA patch_index
+    STA scroll_speed_x
     LDA #$01
     STA isArrayPatch
-   ; STA patch_length
+    LDA #%10000001
+    STA scroll_speed_y
+    LDA #%10010000  
+    STA ppuctrl
+    LDA #%00011010
+    STA ppumask
 
 InitializeAudio:
     LDA #$00
