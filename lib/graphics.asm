@@ -22,9 +22,6 @@ Load256Tiles:
 LoadBackground_Column:              ;  Loads one column of graphics
     RTS
 
-LoadBackground_Row:
-    RTS
-
 LoadBackground_Patch:             ;  Untested subroutine
     LDA isArrayPatch
     BEQ LoadBackground_PatchDone
@@ -91,9 +88,6 @@ LoadBackground_ArrayLoop:
     BNE LoadBackground_ArrayLoop 
     RTS
 
-LoadBackground_Single:
-    RTS
-
 LoadPalette_All:              
     LDA PPU_STATUS   
     LDA #$3F    
@@ -107,20 +101,6 @@ LoadPalette_BGLoop:
     INY
     CPY #$20
     BNE LoadPalette_BGLoop
-    RTS
-
-LoadPalette_SprColors:
-    LDA PPU_STATUS   
-    LDA #$3F    
-    STA PPU_ADDR   
-    STY PPU_ADDR
-    STX pointer_high
-LoadPaletteLoop:
-    LDA [pointer_low], y
-    STA PPU_DATA
-    INY
-    CPY #$20
-    BNE LoadPaletteLoop
     RTS
 
 LoadPalette_1Color:
@@ -145,57 +125,48 @@ LoadAttr_AllLoop:
 
 SpriteDMA:
     LDA #$00
-    STA OAM_ADDR  
+    STA OAM_ADDR
     LDA #$03
     STA OAM_DMA   
     RTS    
 
 Scroll:
-    LDA scroll
-    AND #%01110000
-    LSR A
-    LSR A
-    LSR A
-    LSR A
-    STA scroll_speed
-    LDA scroll
+    LDA scroll_speed_x
     AND #%10000000
     BEQ ScrollXLeft
 ScrollXRight:
-    LDA scroll_x
+    LDA scroll_speed_x
+    AND #%01111111
     CLC
-    ADC scroll_speed
+    ADC scroll_x
     STA scroll_x
     STA PPU_SCROLL
     JMP ScrollYCheck
 ScrollXLeft:
     LDA scroll_x
-    SEC 
-    SBC scroll_speed
+    SEC
+    SBC scroll_speed_x
     STA scroll_x
     STA PPU_SCROLL
 ScrollYCheck:
-    LDA scroll
-    AND #%00000111
-    STA scroll_speed
-    LDA scroll
-    AND #%00001000
+    LDA scroll_speed_y
+    AND #%10000000
     BEQ ScrollYDown
 ScrollYUp:
-    LDA scroll_y
+    LDA scroll_speed_y
+    AND #%01111111
     CLC
-    ADC scroll_speed
-    ;CMP #$EF
-    ;BCS ResetScrollUp
+    ADC scroll_y
+    CMP #$EF
+    BCS ResetScrollUp
     STA scroll_y
     STA PPU_SCROLL
     RTS
 ScrollYDown:
     LDA scroll_y
     SEC
-    SBC scroll_speed
-    ;CMP #$01
-    ;BCC ResetScrollDown
+    SBC scroll_speed_y
+    BCC ResetScrollDown
     STA scroll_y
     STA PPU_SCROLL
     RTS
@@ -205,27 +176,27 @@ ResetScrollUp:
     STA PPU_SCROLL
     RTS
 ResetScrollDown:
-    LDA #$ED
+    LDA #$EE
     STA scroll_y
     STA PPU_SCROLL
     RTS
 
 ;; TODO --> Think about object model
-LoadSpr:
-    LDX #$00    
-LoadSprLoop:    
-    ;LDA heart,x 
-    LDA #$01
-    STA $0300,x 
-    INX         
-    CPX #$20    
-    BNE LoadSprLoop  
-    RTS                                          
+;LoadSpr:
+;    LDX #$00    
+;LoadSprLoop:    
+;    ;LDA heart,x 
+;    LDA #$01
+;    STA $0300,x 
+;    INX         
+;    CPX #$20    
+;    BNE LoadSprLoop  
+;    RTS                                          
 
 TurnScreenOn:
-    LDA #%10010000   
+    LDA ppuctrl   
     STA PPU_CTRL
-    LDA #%00011010   
+    LDA ppumask  
     STA PPU_MASK
     RTS         
 
