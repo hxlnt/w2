@@ -30,10 +30,11 @@
     JSR LoadBackground_All
 
     LDX #HIGH(attract_attr)
-    LDY #NMTBL_TOP_LEFT
+    LDY #LOW(attract_attr)
+    LDA #NMTBL_TOP_LEFT
     JSR LoadAttr_All
 
-    jsr DrawResetCount
+    JSR DrawResetCount
     JSR TurnScreenOn                        
 
 GameLoop:                               ;;;;;; Main game loop
