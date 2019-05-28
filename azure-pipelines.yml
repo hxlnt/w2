@@ -3,7 +3,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'ubuntu-1604'
 
 resources:
   repositories:
@@ -55,7 +55,7 @@ steps:
   displayName: 'Install emulator'
   inputs:
     targetType: 'inline'
-    script: 'sudo apt-get update && sudo apt-get install -y --no-install-recommends fceux'
+    script: 'apt-get update && apt-get install -y --no-install-recommends fceux'
 
 - task: Bash@3
   displayName: 'Take screenshot in FCEUX'
