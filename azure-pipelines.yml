@@ -61,7 +61,7 @@ steps:
   displayName: 'Try running FCEUX'
   inputs:
     targetType: 'inline'
-    script: 'cd /usr/bin && nes w2.asm'
+    script: 'cd /usr/bin && ls && nes w2.asm'
 
 - task: Bash@3
   displayName: 'Take screenshot in FCEUX'
