@@ -55,4 +55,10 @@ steps:
   displayName: 'Install emulator'
   inputs:
     targetType: 'inline'
-    script: 'npm install jsnes'
+    script: 'sudo apt install fceux'
+
+- task: Bash@3
+  displayName: 'Take screenshot in FCEUX'
+  inputs:
+    targetType: 'inline'
+    script: 'fceux -lua build/screenshot.lua w2.nes'
