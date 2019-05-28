@@ -14,7 +14,6 @@ title_bg:
     .incbin "game/data/title/title.nam"
 title_attr:
     .incbin "game/data/title/title.atr"
-
 attract_pal:
     .incbin "game/data/attract/attract.pal"
 end_pal:
