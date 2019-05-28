@@ -1,8 +1,5 @@
 attract_bg:
     .incbin "game/data/attract/attract.nam"
-    .incbin "lib/bg-spacer.bin"
-attract_pal:
-    .incbin "game/data/attract/attract.pal"
 attract_attr:
     .incbin "game/data/attract/attract.atr"
 end_bg:
@@ -17,6 +14,8 @@ title_bg:
     .incbin "game/data/title/title.nam"
 title_attr:
     .incbin "game/data/title/title.atr"
+attract_pal:
+    .incbin "game/data/attract/attract.pal"
 end_pal:
     .incbin "game/data/end/end.pal"
 game_pal:

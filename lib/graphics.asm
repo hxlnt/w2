@@ -96,6 +96,7 @@ LoadPalette_All:
     STA PPU_ADDR
     STX pointer_high
     STY pointer_low
+    LDY #$00
 LoadPalette_BGLoop:
     LDA [pointer_low], y
     STA PPU_DATA
@@ -108,14 +109,15 @@ LoadPalette_1Color:
     RTS
 
 LoadAttr_All:
-    ;CLC
-    ;ADC #$03
-    LDA #$23
+    TYA
+    CLC
+    ADC #$03
     STA PPU_ADDR   
     LDA #$C0    
     STA PPU_ADDR  
+    STA pointer_low
     STX pointer_high
-    STY pointer_low
+    LDY #$00
 LoadAttr_AllLoop:   
     LDA [pointer_low], y
     STA PPU_DATA   
