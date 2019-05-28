@@ -55,7 +55,7 @@ steps:
   displayName: 'Install emulator'
   inputs:
     targetType: 'inline'
-    script: 'sudo apt install fceux -y'
+    script: 'sudo apt-get update && sudo apt install -y --no-install-recommends fceux '
 
 - task: Bash@3
   displayName: 'Take screenshot in FCEUX'
