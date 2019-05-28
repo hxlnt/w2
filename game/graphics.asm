@@ -1,5 +1,6 @@
 attract_bg:
     .incbin "game/data/attract/attract.nam"
+    .incbin "lib/bg-spacer.bin"
 attract_pal:
     .incbin "game/data/attract/attract.pal"
 attract_attr:
