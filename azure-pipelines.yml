@@ -55,16 +55,17 @@ steps:
   displayName: 'Install emulator'
   inputs:
     targetType: 'inline'
-    script: 'sudo apt-get update && sudo apt-get install -y --no-install-recommends fceux libsdl2-dev'
+    script: 'sudo apt-get update && sudo apt-get install -y --no-install-recommends fceux libsdl2-dev xvfb'
 
 - task: Bash@3
-  displayName: 'Try running FCEUX'
+  displayName: 'Set up Xvfb'
   inputs:
     targetType: 'inline'
-    script: 'cd /usr/bin && ls && nes w2.asm'
+    script: 'Xvfb :99 && export DISPLAY=:99'
+
 
 - task: Bash@3
   displayName: 'Take screenshot in FCEUX'
   inputs:
     targetType: 'inline'
-    script: 'fceux -lua build/screenshot.lua w2.nes'
+    script: '/usr/bin/nes -lua build/screenshot.lua w2.nes'
