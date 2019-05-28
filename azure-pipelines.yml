@@ -58,11 +58,16 @@ steps:
     script: 'sudo apt-get update && sudo apt-get install -y --no-install-recommends fceux libsdl2-dev xvfb'
 
 - task: Bash@3
-  displayName: 'Set up Xvfb'
+  displayName: 'Start Xvfb'
   inputs:
     targetType: 'inline'
-    script: 'Xvfb :99 && export DISPLAY=:99'
+    script: 'Xvfb :99 &'
 
+- task: Bash@3
+  displayName: 'Set up Xvfb display'
+  inputs:
+    targetType: 'inline'
+    script: 'export DISPLAY=:99'
 
 - task: Bash@3
   displayName: 'Take screenshot in FCEUX'
