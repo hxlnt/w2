@@ -58,19 +58,7 @@ steps:
     script: 'sudo apt-get update && sudo apt-get install -y --no-install-recommends fceux libsdl2-dev xvfb'
 
 - task: Bash@3
-  displayName: 'Start Xvfb'
-  inputs:
-    targetType: 'inline'
-    script: 'Xvfb :99 &'
-
-- task: Bash@3
-  displayName: 'Set up Xvfb display'
-  inputs:
-    targetType: 'inline'
-    script: 'export DISPLAY=:99'
-
-- task: Bash@3
   displayName: 'Take screenshot in FCEUX'
   inputs:
     targetType: 'inline'
-    script: '/usr/bin/nes -lua build/screenshot.lua w2.nes'
+    script: 'xvfb-run /usr/bin/nes -lua build/screenshot.lua w2.nes'
