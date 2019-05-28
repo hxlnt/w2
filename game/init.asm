@@ -5,10 +5,9 @@ AssignValues:
     STA gamestate
     STA patch_index
     STA scroll_speed_x
+    STA scroll_speed_y
     LDA #$01
     STA isArrayPatch
-    LDA #%10000001
-    STA scroll_speed_y
     LDA #%10010000  
     STA ppuctrl
     LDA #%00011010
