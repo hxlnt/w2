@@ -3,7 +3,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-1604'
+  vmImage: 'ubuntu-latest'
 
 resources:
   repositories:
