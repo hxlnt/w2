@@ -55,7 +55,7 @@ steps:
   displayName: 'Install emulator'
   inputs:
     targetType: 'inline'
-    script: 'sudo apt-get update && apt-get install -y --no-install-recommends fceux libsdl2-dev'
+    script: 'sudo apt-get update && sudo apt-get install -y --no-install-recommends fceux libsdl2-dev'
 
 - task: Bash@3
   displayName: 'Take screenshot in FCEUX'
