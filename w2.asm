@@ -16,6 +16,9 @@
     .bank 0 ;;;;;;;;;;;;;;;;;;;;;;;;;  BANK 0: PROGRAM CODE
     .org $8000 ;;;;;;;;;;;;;;;;;;;;;;  $8000 - $9FFF
 
+    LDA #%00001110                  ;  Configure banks
+    STA bank_config                 ;
+    
     .include "lib/console_init.asm" ;  Import and run initial-
     .include "game/init.asm"        ;    ization subroutines
 
