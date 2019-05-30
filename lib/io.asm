@@ -11,18 +11,18 @@ GAMEPAD_RIGHT   = %00000001
 GAMEPAD_1       = $4016
 GAMEPAD_2       = $4017
 
-ReadController1:
+ReadGamepad1:
     LDA #$01
     STA GAMEPAD_1             
     LDA #$00
     STA GAMEPAD_1            
     LDX #$08
-ReadController1Loop:       
+ReadGamepad1Loop:       
     LDA GAMEPAD_1             
     LSR A   
     ROL buttons1           
     DEX     
-    BNE ReadController1Loop
+    BNE ReadGamepad1Loop
     LDA buttons1pending
     EOR #%11111111
     AND buttons1
@@ -31,18 +31,18 @@ ReadController1Loop:
     STA buttons1pending 
     RTS     
 
-ReadController2:
+ReadGamepad2:
     LDA #$01
     STA GAMEPAD_2            
     LDA #$00
     STA GAMEPAD_2              
     LDX #$08
-ReadController2Loop:       
+ReadGamepad2Loop:       
     LDA GAMEPAD_2              
     LSR A   
     ROL buttons2           
     DEX     
-    BNE ReadController2Loop
+    BNE ReadGamepad2Loop
     LDA buttons2pending
     EOR #%11111111
     AND buttons2

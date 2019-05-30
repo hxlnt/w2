@@ -1,5 +1,7 @@
 
 AssignValues:
+    LDA #%00001110 ; 8KB CHR, 16KB PRG, $8000-BFFF swappable, vertical mirroring
+    STA bank_config
     LDA #$00
     STA framecounter
     STA gamestate

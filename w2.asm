@@ -45,9 +45,8 @@ GameLoop:                           ;  Start game loop
 
     JMP GameLoop                    ;  End game loop
 
-    .include "lib/io.asm"           ;  Import I/O subroutines
-    .include "lib/counters.asm"     ;  Import counter and MMC1
-    .include "lib/mmc1.asm"         ;    subroutines
+    .include "lib/counters.asm"     ;  Import counter and I/O
+    .include "lib/io.asm"           ;    subroutines
     .include "lib/lookup_tables.asm";  Import lookup tables
     .include "game/subroutines.asm" ;  Import game subroutines
 
@@ -89,6 +88,8 @@ NMI:                                ;  Start NMI
     TAX
     PLA
     RTI
+
+    .include "lib/mmc1.asm"         ;  Include MMC1 subroutines
 
     .org $FFFA                      ;  Set last three bytes as
     .dw NMI                         ;    NMI, Reset, and IRQ

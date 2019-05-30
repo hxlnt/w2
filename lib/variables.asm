@@ -30,3 +30,4 @@ patch_length    .rs 1
 sourcebank      .rs 1
 ppuctrl         .rs 1
 ppumask         .rs 1
+bank_config     .rs 1
