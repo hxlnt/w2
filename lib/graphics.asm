@@ -1,5 +1,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  GRAPHICS ROUTINES
+PPU_ADDR        = $2006
+PPU_DATA        = $2007
 
+NMTBL_TOP_LEFT  = $20               ;;;;;; High byte of nametable addresses
+NMTBL_TOP_RIGHT = $24
+NMTBL_BOT_LEFT  = $28
+NMTBL_BOT_RIGHT = $2C
+
+OAM_ADDR        = $2003             ;;; Sprite registers
+OAM_DATA        = $2004
+OAM_DMA         = $4014
+
+PALETTE_BG      = $00               ;;;;;; Low byte of palette addresses
+PALETTE_SPR     = $10
 
 LoadBackground_All:                 ;  Loads full screen of graphics
     LDA PPU_STATUS
@@ -132,57 +145,6 @@ SpriteDMA:
     LDA #$03
     STA OAM_DMA   
     RTS    
-
-Scroll:
-    LDA scroll_speed_x
-    AND #%10000000
-    BEQ ScrollXLeft
-ScrollXRight:
-    LDA scroll_speed_x
-    AND #%01111111
-    CLC
-    ADC scroll_x
-    STA scroll_x
-    STA PPU_SCROLL
-    JMP ScrollYCheck
-ScrollXLeft:
-    LDA scroll_x
-    SEC
-    SBC scroll_speed_x
-    STA scroll_x
-    STA PPU_SCROLL
-ScrollYCheck:
-    LDA scroll_speed_y
-    AND #%10000000
-    BEQ ScrollYDown
-ScrollYUp:
-    LDA scroll_speed_y
-    AND #%01111111
-    CLC
-    ADC scroll_y
-    CMP #$EF
-    BCS ResetScrollUp
-    STA scroll_y
-    STA PPU_SCROLL
-    RTS
-ScrollYDown:
-    LDA scroll_y
-    SEC
-    SBC scroll_speed_y
-    BCC ResetScrollDown
-    STA scroll_y
-    STA PPU_SCROLL
-    RTS
-ResetScrollUp:
-    LDA #$00
-    STA scroll_y
-    STA PPU_SCROLL
-    RTS
-ResetScrollDown:
-    LDA #$EE
-    STA scroll_y
-    STA PPU_SCROLL
-    RTS
 
 ;; TODO --> Think about object model
 ;LoadSpr:

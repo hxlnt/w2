@@ -1,3 +1,7 @@
+PPU_CTRL        = $2000             ;;;;;; PPU registers
+PPU_MASK        = $2001
+PPU_STATUS      = $2002
+
 Reset:
     SEI      
     CLD      
