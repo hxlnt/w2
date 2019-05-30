@@ -73,9 +73,9 @@ NMI:                                ;  Start NMI
 
     PHA                             ;  Push A, X, and Y to the
     TXA                             ;    stack
-    PHA
-    TYA
-    PHA
+    PHA                             ;
+    TYA                             ;
+    PHA                             ;
 
     JSR Counter                     ;  Increment counters
 
@@ -87,10 +87,10 @@ NMI:                                ;  Start NMI
 
     PLA                             ;  Pop Y, X, and A off the
     TAY                             ;    stack
-    PLA 
-    TAX
-    PLA
-    RTI
+    PLA                             ;
+    TAX                             ;
+    PLA                             ;
+    RTI                             ;
 
     .include "lib/mmc1.asm"         ;  Include MMC1 subroutines
 
