@@ -1,88 +1,28 @@
-LoadBackground_Counter:
-    STX pointer_high
-    STY pointer_low
-    LDA PPU_STATUS
-    LDY #$00
-    LDA [pointer_low], y
-    STA PPU_ADDR
-    INY
-    LDA [pointer_low], y
-    STA PPU_ADDR
-    LDA displaycounter
-    AND #%10000000
-    LSR A
-    LSR A
-    LSR A
-    LSR A
-    LSR A
-    LSR A
-    LSR A
-    STA PPU_DATA
-    LDA displaycounter
-    AND #%01000000
-    LSR A
-    LSR A
-    LSR A
-    LSR A
-    LSR A
-    LSR A
-    STA PPU_DATA
-    LDA displaycounter
-    AND #%00100000
-    LSR A
-    LSR A
-    LSR A
-    LSR A
-    LSR A
-    STA PPU_DATA
-    LDA displaycounter
-    AND #%00010000
-    LSR A
-    LSR A
-    LSR A
-    LSR A
-    STA PPU_DATA
-    LDA displaycounter
-    AND #%00001000
-    LSR A
-    LSR A
-    LSR A
-    STA PPU_DATA
-    LDA displaycounter
-    AND #%00000100
-    LSR A
-    LSR A
-    STA PPU_DATA
-    LDA displaycounter
-    AND #%00000010
-    LSR A
-    STA PPU_DATA
-    LDA displaycounter
-    AND #%00000001
-    STA PPU_DATA
-    RTS
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  Custom subroutines
 
       
-DrawResetCount:
-  LDA resetflag
-  CMP #$AB
-  BNE DrawResetCountClear          
-  JMP DrawResetCountNumber   
+DrawResetCount:                     ;  Compare resetflag to #$AB
+  LDA resetflag                     ;    to see if console has
+  CMP #$AB                          ;    been reset before. If
+  BNE DrawResetCountClear           ;    it has not, set
+  JMP DrawResetCountNumber          ;    resetflag to #$AB and
+DrawResetCountClear:                ;    set resetcounter to the
+  LDA #$AB                          ;    ASCII value '0'.
+  STA resetflag                     ;
+  LDA #'0'                          ;  
+  STA resetcounter                  ;    
 
-DrawResetCountClear:
-  LDA #$AB
-  STA resetflag
-  LDA #'0'
-  STA resetcounter
-DrawResetCountNumber:
-  LDA $2002
-  LDA #$20
-  STA $2006
-  LDA #$5D
-  STA $2006
-  LDA resetcounter
-  STA $2007
-  CLC
-  ADC #$01
-  STA resetcounter
-  RTS
+DrawResetCountNumber:               ;  Draw the value stored in
+  LDA $2002                         ;    resetcounter to the 
+  LDA #$20                          ;    screen at address
+  STA $2006                         ;    $205D.
+  LDA #$5D                          ;
+  STA $2006                         ;
+  LDA resetcounter                  ;
+  STA $2007                         ;
+
+  CLC                               ;  Increment the value in
+  ADC #$01                          ;    resetcounter for the
+  STA resetcounter                  ;    next time the console
+  RTS                               ;    is reset.

@@ -32,7 +32,6 @@
 | TurnScreenOff | Disables screen rendering. | `JSR TurnScreenOff` |
 | TurnScreenOn | Enables NMI, sets sprite height, selects background/sprite addresses, sets VRAM address increment mode, and sets base nametable address.<BR>`VPHBSINN`<BR>`llllll++ Base nametable address (00 = $2000, 01 = $2400, 10 = $2800, 11 = $2C00)`<BR>`lllll+-- VRAM address increment per CPU read (0 = add 1, 1 = add 32)`<BR>`llll+--- Sprite pattern table address for 8x8 mode (0 = $0000, 1 = $1000)`<BR>`lll+---- Background pattern table address (0 = $0000, 1 = $1000)`<BR>`ll+----- Sprite size (0 = 8x8, 1 = 8x16)`<BR>`l+------ PPU master/slave select (Set to 0)`<BR>`+------- Generate NMI at the start of VBlank (Boolean)` | `JSR TurnScreenOn` |
 
-
 ## io.asm
 
 **Description**  Handles gamepad reading.
@@ -78,4 +77,4 @@
 
 **Description**  Variables used by `cutelib`.
 
-**Usage**  Add `.include "lib/variables.asm"` at zero page (after `.rsset $0000`).
+**Usage**  Add `.include "lib/variables.asm"` at zero page (after `.rsset $0000`). 
