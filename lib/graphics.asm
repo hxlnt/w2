@@ -1,53 +1,56 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  GRAPHICS ROUTINES
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  Graphics subroutines
+
+
 PPU_ADDR        = $2006
 PPU_DATA        = $2007
-
-NMTBL_TOP_LEFT  = $20               ;;;;;; High byte of nametable addresses
+NMTBL_TOP_LEFT  = $20               
 NMTBL_TOP_RIGHT = $24
 NMTBL_BOT_LEFT  = $28
 NMTBL_BOT_RIGHT = $2C
-
-OAM_ADDR        = $2003             ;;; Sprite registers
+OAM_ADDR        = $2003            
 OAM_DATA        = $2004
 OAM_DMA         = $4014
-
-PALETTE_BG      = $00               ;;;;;; Low byte of palette addresses
+PALETTE_BG      = $00              
 PALETTE_SPR     = $10
 
-LoadBackground_All:                 ;  Loads full screen of graphics
-    LDA PPU_STATUS
-    STY PPU_ADDR
-    LDY #$00
-    STY PPU_ADDR
-    STY pointer_low
-    STX pointer_high
-    LDX #$04
-Load256Tiles:
-    LDA [pointer_low], y
-    STA PPU_DATA
-    INY
-    BNE Load256Tiles 
-    INC pointer_high
-    DEX
-    BNE Load256Tiles
-    RTS
+LoadBackground_All:                 ;  Load full nametable.
 
-LoadBackground_Column:              ;  Loads one column of graphics
-    RTS
+    LDA PPU_STATUS                  ;  Set PPU address to
+    STY PPU_ADDR                    ;    $[Y]00.
+    LDY #$00                        ; 
+    STY PPU_ADDR                    ;
 
-LoadBackground_Patch:             ;  Untested subroutine
-    LDA isArrayPatch
-    BEQ LoadBackground_PatchDone
-    LDA framecounter
-    AND #%00000111
-    CMP #%00000111
-    BNE LoadBackground_PatchSkip
-    STX pointer_high
-    STY pointer_low
-    LDA PPU_STATUS
+    STY pointer_low                 ;  Set nametable address to
+    STX pointer_high                ;    $[X]00 and load all
+    LDX #$04                        ;    1,024 tiles.
+Load256Tiles:                       ;
+    LDA [pointer_low], y            ;
+    STA PPU_DATA                    ;
+    INY                             ;
+    BNE Load256Tiles                ;
+    INC pointer_high                ;
+    DEX                             ;
+    BNE Load256Tiles                ;
+    RTS                             ;
+
+LoadBackground_Patch:               ;  Load nametable patch.
+
+    LDA isArrayPatch                ;  Return from subroutine if
+    BEQ LoadBackground_PatchDone    ;    patch is done loading.
+
+    LDA framecounter                ;  Return from subroutine if
+    AND patch_speed                 ;    framecounter is not a
+    CMP patch_speed                 ;    multiple of 
+    BNE LoadBackground_PatchSkip    ;    patch_speed.
+    
+    STX pointer_high                ;
+    STY pointer_low                 ; 
+    LDA PPU_STATUS                  ;
     LDY #$00
     LDA [pointer_low], y
     STA PPU_ADDR
+
     INY
     LDA [pointer_low], y
     CLC

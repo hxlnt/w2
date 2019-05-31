@@ -5,9 +5,9 @@
 Counter:                            ;  Increment framecounter.
     INC framecounter                ;
 
-FrameCounter:                       ;  If 60 frames have passed,
-    INC frames                      ;    increment seconds and
-    LDA frames                      ;    reset frames to 0.
+FrameCounter:                       ;  Increment seconds and
+    INC frames                      ;    reset frames to 0 if 60
+    LDA frames                      ;    frames have passed.
     CMP #60                         ;
     BEQ SecondCounter               ;
     RTS                             ;
@@ -16,10 +16,10 @@ SecondCounter:                      ;
     STA frames                      ;
     INC seconds                     ;
 
-    LDA seconds                     ;  If 3,600 frames (60
-    CMP #60                         ;    seconds) have passed,
-    BEQ MinuteCounter               ;    increment minutes and
-    RTS                             ;    reset seconds to 0.
+    LDA seconds                     ;  Increment minutes and
+    CMP #60                         ;    reset seconds to 0 if
+    BEQ MinuteCounter               ;    3,600 frames (60
+    RTS                             ;    seconds) have passed.
 MinuteCounter:                      ;
     LDA #$00                        ;
     STA seconds                     ;
