@@ -1,6 +1,8 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  LOOKUP TABLES
 
-sine:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  Lookup tables
+
+
+sine:                               ;  Contains sine wave data.
     .db $80,$83,$86,$89,$8C,$8F,$92,$95
     .db $98,$9C,$9F,$A2,$A5,$A8,$AB,$AE
     .db $B0,$B3,$B6,$B9,$BC,$BF,$C1,$C4
