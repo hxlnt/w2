@@ -2,8 +2,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  Initialization
 
 
-    LDA #$01                        ;  Set flag to prepare
-    STA isArrayPatch                ;    LoadBackground_Patch.
+    LDA #$00                        ;  Clear isPatchDone flag
+    STA isPatchDone                 ;    in LoadBackground_Patch.
 
     LDA #%00000111                  ;  Set speed at which patch
     STA patch_speed                 ;    tiles pop in.

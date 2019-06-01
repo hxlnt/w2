@@ -36,8 +36,8 @@ Load256Tiles:                       ;
 
 LoadBackground_Patch:               ;  Load nametable patch.
 
-    LDA isArrayPatch                ;  Return from subroutine if
-    BEQ LoadBackground_PatchDone    ;    patch is done loading.
+    LDA isPatchDone                ;  Return from subroutine if
+    BNE LoadBackground_PatchDone    ;    patch is done loading.
 
     LDA framecounter                ;  Return from subroutine if
     AND patch_speed                 ;    framecounter is not a
@@ -68,16 +68,16 @@ LoadBackground_Patch:               ;  Load nametable patch.
     LDA [pointer_low], y            ;
     STA PPU_DATA                    ;
 
-    LDA patch_length                ;  Set isArrayPatch flag to
-    CMP patch_index                 ;    false if all of the
+    LDA patch_length                ;  Set isPatchDone flag to
+    CMP patch_index                 ;    true if all of the
     BEQ LoadBackground_PatchDone    ;    background patch has 
     LDX patch_index                 ;    been written to the
     INX                             ;    screen.
     STX patch_index                 ;
     RTS                             ;
 LoadBackground_PatchDone:           ;
-    LDA #$00                        ;
-    STA isArrayPatch                ;
+    LDA #$01                        ;
+    STA isPatchDone                ;
 LoadBackground_PatchSkip:           ;
     RTS                             ;
 

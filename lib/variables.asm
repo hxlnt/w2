@@ -24,7 +24,7 @@ scroll_speed_y  .rs 1               ;  %Dsssssss
                                     ;   |+++++++ Scroll speed
                                     ;   +------- Scroll direction (0=up, 1=down)
 msg_end         .rs 1               ;  Number of background tiles to be loaded simulatenously
-isArrayPatch    .rs 1               ;  True if array should pop in one tile at a time
+isPatchDone    .rs 1               ;  True if array should pop in one tile at a time
 patch_index     .rs 1               ;  Index in dialog row
 patch_length    .rs 1
 sourcebank      .rs 1
