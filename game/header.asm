@@ -1,4 +1,8 @@
-    .inesprg 2   ; 8x 16KB PRG code = 128KB
-    .ineschr 1   ; 8x 8KB CHR data = CHR RAM
-    .inesmap 1   ; mapper 1 = MMC1
-    .inesmir %10 ; Enable WRAM
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  Header
+
+
+    .inesprg 2                      ;  Set 2 16KB PRG banks.
+    .ineschr 1                      ;  Set 1 8KB CHR bank.
+    .inesmap 1                      ;  Set MMC1 mapper.
+    .inesmir %10                    ;  Enable WRAM.

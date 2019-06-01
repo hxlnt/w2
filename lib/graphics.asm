@@ -1,40 +1,56 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  GRAPHICS ROUTINES
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  Graphics subroutines
 
 
-LoadBackground_All:                 ;  Loads full screen of graphics
-    LDA PPU_STATUS
-    STY PPU_ADDR
-    LDY #$00
-    STY PPU_ADDR
-    STY pointer_low
-    STX pointer_high
-    LDX #$04
-Load256Tiles:
-    LDA [pointer_low], y
-    STA PPU_DATA
-    INY
-    BNE Load256Tiles 
-    INC pointer_high
-    DEX
-    BNE Load256Tiles
-    RTS
+PPU_ADDR        = $2006
+PPU_DATA        = $2007
+NMTBL_TOP_LEFT  = $20               
+NMTBL_TOP_RIGHT = $24
+NMTBL_BOT_LEFT  = $28
+NMTBL_BOT_RIGHT = $2C
+OAM_ADDR        = $2003            
+OAM_DATA        = $2004
+OAM_DMA         = $4014
+PALETTE_BG      = $00              
+PALETTE_SPR     = $10
 
-LoadBackground_Column:              ;  Loads one column of graphics
-    RTS
+LoadBackground_All:                 ;  Load full nametable.
 
-LoadBackground_Patch:             ;  Untested subroutine
-    LDA isArrayPatch
-    BEQ LoadBackground_PatchDone
-    LDA framecounter
-    AND #%00000111
-    CMP #%00000111
-    BNE LoadBackground_PatchSkip
-    STX pointer_high
-    STY pointer_low
-    LDA PPU_STATUS
+    LDA PPU_STATUS                  ;  Set PPU address to
+    STY PPU_ADDR                    ;    $[Y]00.
+    LDY #$00                        ; 
+    STY PPU_ADDR                    ;
+
+    STY pointer_low                 ;  Set nametable address to
+    STX pointer_high                ;    $[X]00 and load all
+    LDX #$04                        ;    1,024 tiles.
+Load256Tiles:                       ;
+    LDA [pointer_low], y            ;
+    STA PPU_DATA                    ;
+    INY                             ;
+    BNE Load256Tiles                ;
+    INC pointer_high                ;
+    DEX                             ;
+    BNE Load256Tiles                ;
+    RTS                             ;
+
+LoadBackground_Patch:               ;  Load nametable patch.
+
+    LDA isArrayPatch                ;  Return from subroutine if
+    BEQ LoadBackground_PatchDone    ;    patch is done loading.
+
+    LDA framecounter                ;  Return from subroutine if
+    AND patch_speed                 ;    framecounter is not a
+    CMP patch_speed                 ;    multiple of 
+    BNE LoadBackground_PatchSkip    ;    patch_speed.
+    
+    STX pointer_high                ;
+    STY pointer_low                 ; 
+    LDA PPU_STATUS                  ;
     LDY #$00
     LDA [pointer_low], y
     STA PPU_ADDR
+
     INY
     LDA [pointer_low], y
     CLC
@@ -132,57 +148,6 @@ SpriteDMA:
     LDA #$03
     STA OAM_DMA   
     RTS    
-
-Scroll:
-    LDA scroll_speed_x
-    AND #%10000000
-    BEQ ScrollXLeft
-ScrollXRight:
-    LDA scroll_speed_x
-    AND #%01111111
-    CLC
-    ADC scroll_x
-    STA scroll_x
-    STA PPU_SCROLL
-    JMP ScrollYCheck
-ScrollXLeft:
-    LDA scroll_x
-    SEC
-    SBC scroll_speed_x
-    STA scroll_x
-    STA PPU_SCROLL
-ScrollYCheck:
-    LDA scroll_speed_y
-    AND #%10000000
-    BEQ ScrollYDown
-ScrollYUp:
-    LDA scroll_speed_y
-    AND #%01111111
-    CLC
-    ADC scroll_y
-    CMP #$EF
-    BCS ResetScrollUp
-    STA scroll_y
-    STA PPU_SCROLL
-    RTS
-ScrollYDown:
-    LDA scroll_y
-    SEC
-    SBC scroll_speed_y
-    BCC ResetScrollDown
-    STA scroll_y
-    STA PPU_SCROLL
-    RTS
-ResetScrollUp:
-    LDA #$00
-    STA scroll_y
-    STA PPU_SCROLL
-    RTS
-ResetScrollDown:
-    LDA #$EE
-    STA scroll_y
-    STA PPU_SCROLL
-    RTS
 
 ;; TODO --> Think about object model
 ;LoadSpr:

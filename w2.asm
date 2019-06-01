@@ -1,97 +1,105 @@
 
-                                    ;;;;;; w2 // hxlnt 2019 ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                                                          
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  w2 // hxlnt 2019
 
 
-    .include "game/header.asm"      ;;;;;; Header
+    .include "game/header.asm"      ;  Import header.
+
     .rsset $0000
-    .include "lib/variables.asm"
-    .include "game/variables.asm" 
-    .include "lib/constants.asm"
-    .include "game/constants.asm"
+    .include "lib/variables.asm"    ;  Import library variables.
+    .include "game/variables.asm"   ;  Import game variables.
+    .include "game/constants.asm"   ;  Import game constants.
 
     .rsset $6000
-    .include "game/wram.asm"
+    .include "game/wram.asm"        ;  Import WRAM variables.
 
-    .bank 0
-    .org $8000            
-    .include "lib/console_init.asm" 
-    .include "game/init.asm"
 
-    JSR TurnScreenOff
+    .bank 0 ;;;;;;;;;;;;;;;;;;;;;;;;;  BANK 0: PROGRAM CODE
+    .org $8000 ;;;;;;;;;;;;;;;;;;;;;;  $8000 - $9FFF
+
+    LDA #%00001110                  ;  Configure banks.
+    STA bank_config                 ;
     
-    LDX #HIGH(attract_pal)
-    LDY #LOW(attract_pal)
-    JSR LoadPalette_All
+    .include "lib/console_init.asm" ;  Import and run initial-
+    .include "game/init.asm"        ;    ization subroutines.
 
-    LDX #HIGH(attract_bg)
-    LDY #NMTBL_TOP_LEFT
-    JSR LoadBackground_All
+    JSR TurnScreenOff               ;  Turn screen off.
+    
+    LDX #HIGH(attract_pal)          ;  Load attract_pal palette.
+    LDY #LOW(attract_pal)           ;  
+    JSR LoadPalette_All             ;
 
-    LDX #HIGH(attract_attr)
-    LDY #NMTBL_TOP_LEFT
-    JSR LoadAttr_All
+    LDX #HIGH(attract_bg)           ;  Load attract_bg in top-
+    LDY #NMTBL_TOP_LEFT             ;    left nametable.
+    JSR LoadBackground_All          ;    
 
-    JSR DrawResetCount
-    JSR TurnScreenOn                        
+    LDX #HIGH(attract_attr)         ;  Load attract_attr in top-
+    LDY #NMTBL_TOP_LEFT             ;    left nametable.
+    JSR LoadAttr_All                ;
 
-GameLoop:                               ;;;;;; Main game loop
-;    JSR ReadController1
-;    LDA buttons1read
-;    CMP #GAMEPAD_B
-;    BNE GameLoop
-;    LDA scroll
-;    CLC
-;    ADC #$01
-;    STA scroll
-;    AND #%00001111
-;    STA scroll
-    JMP GameLoop
+    JSR DrawResetCount              ;  Draw reset counter.
 
-    .include "lib/counters.asm"
-    .include "lib/wram.asm"
+    JSR TurnScreenOn                ;  Turn screen on.
 
-    .bank 1                             ;;;;;; Audio
-    .org $A000
-    ;.org MUSIC_LOAD
-    ;.incbin "game/data/music.nsf"
+GameLoop:                           ;  Start game loop.
 
-    .bank 2                             ;;;;;; Graphics
-    .org $C000
-    .include "game/graphics.asm"
-    .include "lib/graphics.asm"
-    .include "lib/io.asm"               ;;;;;; I/O
-    .include "game/subroutines.asm"
+    LDY framecounter                ;  Set scroll_x with
+    LDA sine, y                     ;    incremental values from
+    STA scroll_x                    ;    sine lookup table.
 
-NMI:                                    ;;;;;; NMI
-    PHA
-    TXA
-    PHA
-    TYA
-    PHA
-    JSR Counter
-NMIPatch:
-    LDX #HIGH(end_txt)
-    LDY #LOW(end_txt)
-    JSR LoadBackground_Patch
-NMIDone:  
-    JSR Scroll
-    ;JSR MUSIC_PLAY                              
-    PLA
-    TAY 
-    PLA 
-    TAX
-    PLA
-    RTI
+    JMP GameLoop                    ;  End game loop.
 
-    .bank 3                             ;;;;;; Vectors
-    .org $E000
-    .org $FFFA
-    .dw NMI
-    .dw Reset
+    .include "lib/counters.asm"     ;  Import counter and I/O
+    .include "lib/io.asm"           ;    subroutines.
+    .include "lib/lookup_tables.asm";  Import lookup tables.
+    .include "game/subroutines.asm" ;  Import game subroutines.
+
+
+    .bank 1 ;;;;;;;;;;;;;;;;;;;;;;;;;  BANK 1: AUDIO                         
+    .org $A000 ;;;;;;;;;;;;;;;;;;;;;;  $A000 - $BFFF
+
+
+    .bank 2 ;;;;;;;;;;;;;;;;;;;;;;;;;  BANK 2: GRAPHICS
+    .org $C000 ;;;;;;;;;;;;;;;;;;;;;;  $C000 - $DFFF
+
+    .include "game/graphics.asm"    ;  Import graphic tables.
+    .include "lib/graphics.asm"     ;  Import graphics and 
+    .include "lib/scroll.asm"       ;    scroll subroutines.
+
+
+    .bank 3 ;;;;;;;;;;;;;;;;;;;;;;;;;  BANK 3: NMI AND VECTORS
+    .org $E000 ;;;;;;;;;;;;;;;;;;;;;;  $E000 - $FFFF
+
+NMI:                                ;  Start NMI.
+
+    PHA                             ;  Push A, X, and Y to the
+    TXA                             ;    stack.
+    PHA                             ;
+    TYA                             ;
+    PHA                             ;
+
+    JSR Counter                     ;  Increment counters.
+
+    LDX #HIGH(end_txt)              ;  Write end_txt to the
+    LDY #LOW(end_txt)               ;    background.
+    JSR LoadBackground_Patch        ;
+
+    JSR Scroll                      ;  Scroll background.
+
+    PLA                             ;  Pop Y, X, and A off the
+    TAY                             ;    stack.
+    PLA                             ;
+    TAX                             ;
+    PLA                             ;
+    RTI                             ;
+
+    .include "lib/mmc1.asm"         ;  Include MMC1 subroutines.
+
+    .org $FFFA                      ;  Set last three bytes as
+    .dw NMI                         ;    NMI, Reset, and IRQ
+    .dw Reset                       ;    vectors.
     .dw 0
 
-    .bank 4                             ;;;;;; CHR-ROM
-    .org $0000
-    .incbin "game/data/graphics.chr"
+    .bank 4 ;;;;;;;;;;;;;;;;;;;;;;;;;  BANK 4: CHR-ROM
+    .org $0000 ;;;;;;;;;;;;;;;;;;;;;;  $0000 - $1FFF
+
+    .incbin "game/data/graphics.chr";  Include graphics binary.

@@ -1,1 +1,3 @@
-displaycounter  .rs 1
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  Custom variables
+
