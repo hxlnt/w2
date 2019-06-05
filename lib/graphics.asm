@@ -1,7 +1,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  Graphics subroutines
 
-
+ATTRACT_SPR_LEN = $10
 NMTBL_BOT_LEFT  = $28
 NMTBL_BOT_RIGHT = $2C
 NMTBL_TOP_LEFT  = $20               
@@ -116,6 +116,19 @@ LoadPalette_BGLoop:                 ;
     CPY #$20                        ;
     BNE LoadPalette_BGLoop          ;
     RTS                             ;
+
+LoadSpr:                            ;
+    STA spr_length
+    STX pointer_high
+    STY pointer_low
+    LDY #$00                        
+LoadSprLoop:                                       
+    LDA [pointer_low], y                                   
+    STA $0300, y                                   
+    INY                                              
+    CPY spr_length                                         
+    BNE LoadSprLoop                                          
+    RTS                                                    
 
 SpriteDMA:                          ;  Transfer sprites to         
     LDA #$00                        ;    memory, starting at

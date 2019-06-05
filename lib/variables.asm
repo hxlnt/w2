@@ -9,7 +9,7 @@ buttons1pending .rs 1               ;  Store temporary reads.
 buttons1read    .rs 1               ;  Store debounced reads.
 buttons2        .rs 1               ;  Store gamepad 2 reads.
 buttons2pending .rs 1               ;  Store temporary reads.
-buttons2read    .rs 1               ;  Store debounced reads.
+buttons2read    .rs 1               ;  Store debounced reads.           
 framecounter    .rs 1               ;  Store frames elapse.
 frames          .rs 1               ;  Store temporary count.
 gamestate       .rs 1               ;  Store game state.
@@ -32,4 +32,5 @@ scroll_x        .rs 1               ;  Store X-value of scroll.
 scroll_y        .rs 1               ;  Store Y-value of scroll.
 seconds         .rs 1               ;  Store seconds elapsed.
 sourcebank      .rs 1               ;  Store PRG bank number.
+spr_length      .rs 1               ;  Store sprite data size.
 

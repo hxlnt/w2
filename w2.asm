@@ -36,6 +36,11 @@
     LDY #NMTBL_TOP_LEFT             ;    left nametable.
     JSR LoadAttr_All                ;
 
+    LDX #HIGH(attract_spr)          ;  Load attract_spr.
+    LDY #LOW(attract_spr)           ;
+    LDA #ATTRACT_SPR_LEN            ;
+    JSR LoadSpr                     ;
+
     JSR DrawResetCount              ;  Draw reset counter.
 
     JSR TurnScreenOn                ;  Turn screen on.
@@ -78,6 +83,8 @@ NMI:                                ;  Start NMI.
     PHA                             ;
 
     JSR Counter                     ;  Increment counters.
+
+    JSR SpriteDMA                   ;  Transfer sprites.
 
     LDX #HIGH(attract_txt)          ;  Write end_txt to the
     LDY #LOW(attract_txt)           ;    background.
