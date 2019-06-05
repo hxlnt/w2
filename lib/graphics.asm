@@ -2,17 +2,36 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  Graphics subroutines
 
 
-PPU_ADDR        = $2006
-PPU_DATA        = $2007
-NMTBL_TOP_LEFT  = $20               
-NMTBL_TOP_RIGHT = $24
 NMTBL_BOT_LEFT  = $28
 NMTBL_BOT_RIGHT = $2C
+NMTBL_TOP_LEFT  = $20               
+NMTBL_TOP_RIGHT = $24
 OAM_ADDR        = $2003            
 OAM_DATA        = $2004
 OAM_DMA         = $4014
 PALETTE_BG      = $00              
 PALETTE_SPR     = $10
+PPU_ADDR        = $2006
+PPU_DATA        = $2007
+
+
+LoadAttr_All:                       ;  Load attribute table
+    TYA                             ;    data stored at
+    CLC                             ;    $[X]C0 to PPU
+    ADC #$03                        ;    address $[Y+3]C0.
+    STA PPU_ADDR                    ;
+    LDA #$C0                        ;
+    STA PPU_ADDR                    ;
+    STA pointer_low                 ;
+    STX pointer_high                ;
+    LDY #$00                        ;
+LoadAttr_AllLoop:                   ;
+    LDA [pointer_low], y            ;
+    STA PPU_DATA                    ;
+    INY                             ;
+    CPY #$40                        ;
+    BNE LoadAttr_AllLoop            ;
+    RTS                             ;        
 
 LoadBackground_All:                 ;  Load full nametable.
 
@@ -36,7 +55,7 @@ Load256Tiles:                       ;
 
 LoadBackground_Patch:               ;  Load nametable patch.
 
-    LDA isPatchDone                ;  Return from subroutine if
+    LDA isPatchDone                 ;  Return from subroutine if
     BNE LoadBackground_PatchDone    ;    patch is done loading.
 
     LDA framecounter                ;  Return from subroutine if
@@ -77,7 +96,7 @@ LoadBackground_Patch:               ;  Load nametable patch.
     RTS                             ;
 LoadBackground_PatchDone:           ;
     LDA #$01                        ;
-    STA isPatchDone                ;
+    STA isPatchDone                 ;
 LoadBackground_PatchSkip:           ;
     RTS                             ;
 
@@ -98,23 +117,12 @@ LoadPalette_BGLoop:                 ;
     BNE LoadPalette_BGLoop          ;
     RTS                             ;
 
-LoadAttr_All:                       ;  Load attribute table
-    TYA                             ;    data stored at
-    CLC                             ;    $[X]C0 to PPU
-    ADC #$03                        ;    address $[Y+3]C0.
-    STA PPU_ADDR                    ;
-    LDA #$C0                        ;
-    STA PPU_ADDR                    ;
-    STA pointer_low                 ;
-    STX pointer_high                ;
-    LDY #$00                        ;
-LoadAttr_AllLoop:                   ;
-    LDA [pointer_low], y            ;
-    STA PPU_DATA                    ;
-    INY                             ;
-    CPY #$40                        ;
-    BNE LoadAttr_AllLoop            ;
-    RTS                             ;        
+SpriteDMA:                          ;  Transfer sprites to         
+    LDA #$00                        ;    memory, starting at
+    STA $2003                       ;    $0300.        
+    LDA #$03                        ;                     
+    STA $4014                       ;                               
+    RTS                             ;                               
 
 TurnScreenOn:                       ;  Turn screen on.
     LDA ppuctrl                     ;

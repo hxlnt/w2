@@ -2,17 +2,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  I/O subroutines
 
 
+GAMEPAD_1       = $4016
+GAMEPAD_2       = $4017
 GAMEPAD_A       = %10000000
 GAMEPAD_B       = %01000000
-GAMEPAD_SELECT  = %00100000
-GAMEPAD_START   = %00010000
-GAMEPAD_UP      = %00001000
 GAMEPAD_DOWN    = %00000100
 GAMEPAD_LEFT    = %00000010
 GAMEPAD_RIGHT   = %00000001
-
-GAMEPAD_1       = $4016
-GAMEPAD_2       = $4017
+GAMEPAD_SELECT  = %00100000
+GAMEPAD_START   = %00010000
+GAMEPAD_UP      = %00001000
 
 ReadGamepad1:                       ;  Read input from
     LDA #$01                        ;    gamepad 1.
