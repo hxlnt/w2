@@ -53,3 +53,9 @@ game_txt:                           ;  Import "GAME" at $2082.
 title_txt:                          ;  Import "TITLE" at $2082.
     .db $20, $82, %01100100         ;    Pop tiles in and wait
     .db "TITLE"
+
+attract_spr:
+    .db $58, $00, $00, $78
+    .db $58, $01, $00, $80                                             
+    .db $60, $10, $00, $78                                             
+    .db $60, $11, $00, $80                                             
