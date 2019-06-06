@@ -61,13 +61,13 @@ steps:
   displayName: 'Install emulator dependencies'
   inputs:
     targetType: 'inline'
-    script: sudo apt-get update && sudo apt-get install -y gnome-themes-standard libsdl2-2.0 mono-complete && curl -sL Mesen.0.9.7.zip
+    script: sudo apt-get update && sudo apt-get install -y gnome-themes-standard libsdl2-2.0 mono-complete
 
 - task: Bash@3
   displayName: 'Install emulator'
   inputs:
     targetType: 'inline'
-    script: 'unzip Mesen.0.9.7.zip'
+    script: 'curl -sL https://github.com/SourMesen/Mesen/releases/download/0.9.7/Mesen.0.9.7.zip && unzip Mesen.0.9.7.zip'
 
 - task: Bash@3
   displayName: 'Run emulator'
