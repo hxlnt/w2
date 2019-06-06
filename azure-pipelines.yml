@@ -62,12 +62,17 @@ steps:
       sudo apt update
 
 - task: Bash@3
-  displayName: 'Install emulator'
+  displayName: 'Install emulator dependencies'
   inputs:
     targetType: 'inline'
     script: 
       sudo apt-get update && sudo apt-get install -y gnome-themes-standard libsdl2-2.0 mono-complete
-      wget --content-disposition "https://bin.suyash.io/SourMesen/Mesen?uncompress=true"
+
+- task: Bash@3
+  displayName: 'Install emulator'
+  inputs:
+    targetType: 'inline'
+    script: wget --content-disposition "https://bin.suyash.io/SourMesen/Mesen?uncompress=true"
 
 - task: Bash@3
   displayName: 'Run emulator'
