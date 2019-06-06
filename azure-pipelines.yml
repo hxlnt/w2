@@ -67,7 +67,7 @@ steps:
   displayName: 'Install emulator'
   inputs:
     targetType: 'inline'
-    script: curl -sL Mesen.0.9.7.zip | unzip"
+    script: 'curl -sL Mesen.0.9.7.zip | unzip'
 
 - task: Bash@3
   displayName: 'Run emulator'
