@@ -55,19 +55,25 @@ steps:
   displayName: 'Install emulator'
   inputs:
     targetType: 'inline'
-    script: 'sudo apt-get update && sudo apt-get install -y fceux'
+    script:
+      sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+      sudo apt install apt-transport-https ca-certificates
+      echo "deb https://download.mono-project.com/repo/ubuntu stable-xenial main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
+      sudo apt update
 
 - task: Bash@3
-  displayName: 'Set up xterm'
+  displayName: 'Install emulator'
   inputs:
     targetType: 'inline'
-    script: 'export TERM=xterm'
+    script: 
+      sudo apt-get update && sudo apt-get install -y gnome-themes-standard libsdl2-2.0 mono-complete
+      wget --content-disposition "https://bin.suyash.io/SourMesen/Mesen?uncompress=true"
 
 - task: Bash@3
   displayName: 'Run emulator'
   inputs:
     targetType: 'inline'
-    script: '/usr/bin/nes w2.nes'
+    script: 'mono Mesen.exe w2.nes'
 
 - task: Bash@3
   displayName: 'Install screenshot tool'
