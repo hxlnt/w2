@@ -55,4 +55,22 @@ steps:
   displayName: 'Install emulator'
   inputs:
     targetType: 'inline'
-    script: 'npm install jsnes'
+    script: 'sudo apt-get update && sudo apt-get install -y fceux'
+
+- task: Bash@3
+  displayName: 'Run emulator'
+  inputs:
+    targetType: 'inline'
+    script: '/usr/bin/nes w2.nes'
+
+- task: Bash@3
+  displayName: 'Install screenshot tool'
+  inputs:
+    targetType: 'inline'
+    script: 'pip3 install screenshot'
+
+- task: Bash@3
+  displayName: 'Take screenshot after 1 second'
+  inputs:
+    targetType: 'inline'
+    script: 'screenshot OpenEmu --filename "build/screenshot.png"'
