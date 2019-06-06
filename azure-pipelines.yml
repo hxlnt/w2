@@ -73,7 +73,7 @@ steps:
   displayName: 'Run emulator'
   inputs:
     targetType: 'inline'
-    script: 'ls && mono mesen/Mesen.exe w2.nes'
+    script: 'ls && mono Mesen.exe w2.nes'
 
 - task: Bash@3
   displayName: 'Install screenshot tool'
