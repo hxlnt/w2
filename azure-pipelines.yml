@@ -67,7 +67,7 @@ steps:
   displayName: 'Install emulator'
   inputs:
     targetType: 'inline'
-    script: 'curl -sL https://github.com/SourMesen/Mesen/releases/download/0.9.7/Mesen.0.9.7.zip && unzip Mesen.0.9.7.zip'
+    script: 'curl -sL https://github.com/SourMesen/Mesen/archive/f2af2ba.zip && ls && unzip f2af2ba.zip'
 
 - task: Bash@3
   displayName: 'Run emulator'
