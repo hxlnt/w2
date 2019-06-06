@@ -73,7 +73,7 @@ steps:
   displayName: 'Install screenshot tool'
   inputs:
     targetType: 'inline'
-    script: 'pip install --upgrade pip && pip install setuptools screenshot'
+    script: 'python3 -m pip install --user setuptools screenshot'
 
 - task: Bash@3
   displayName: 'Run emulator'
