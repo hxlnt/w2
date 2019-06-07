@@ -67,7 +67,19 @@ steps:
   displayName: 'Install emulator dependencies'
   inputs:
     targetType: 'inline'
-    script: sudo apt-get update && sudo apt-get install -y gnome-themes-standard imagemagick libsdl2-2.0 mono-complete xvfb
+    script: sudo apt-get update && sudo apt-get install -y gnome-themes-standard libsdl2-2.0 mono-complete xvfb build-essential checkinstall
+
+- task: Bash@3
+  displayName: 'Download ImageMagick'
+  inputs:
+    targetType: 'inline'
+    script: sudo wget http://www.imagemagick.org/download/ImageMagick.tar.gz && sudo tar xzvf ImageMagick.tar.gz
+
+- task: Bash@3
+  displayName: 'Install ImageMagick'
+  inputs:
+    targetType: 'inline'
+    script: cd ImageMagick-7.0.8-48 && make clean && make && checkinstall && ldconfig /usr/local/lib
 
 - task: Bash@3
   displayName: 'Install emulator'
@@ -85,7 +97,13 @@ steps:
   displayName: 'Run emulator'
   inputs:
     targetType: 'inline'
-    script: 'ls && xvfb-run mono Mesen.exe w2.nes &'
+    script: 'Xvfb :99 &'
+
+- task: Bash@3
+  displayName: 'Run emulator'
+  inputs:
+    targetType: 'inline'
+    script: 'export DISPLAY=:99 && mono Mesen.exe w2.nes &'
 
 - task: Bash@3
   displayName: 'Take screenshot after 1 second'
