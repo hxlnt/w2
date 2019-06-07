@@ -7,9 +7,9 @@ pool:
 
 resources:
   repositories:
-  - repository: 'nesasm'
+  - repository: 'w2'
     type: 'github'
-    name: 'camsaul/nesasm'
+    name: 'hxlnt/w2'
     endpoint: 'hxlnt'
 
 variables:
