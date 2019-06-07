@@ -17,10 +17,10 @@ variables:
 
 steps:
 
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.6'
-    architecture: 'x64'
+# - task: UsePythonVersion@0
+#   inputs:
+#     versionSpec: '3.6'
+#     architecture: 'x64'
 
 - task: Bash@3
   displayName: Get NES assembler source
@@ -67,7 +67,7 @@ steps:
   displayName: 'Install emulator dependencies'
   inputs:
     targetType: 'inline'
-    script: sudo apt-get update && sudo apt-get install -y gnome-themes-standard libsdl2-2.0 mono-complete python3-setuptools xvfb
+    script: sudo apt-get update && sudo apt-get install -y gnome-themes-standard imagemagick libsdl2-2.0 mono-complete xvfb
 
 - task: Bash@3
   displayName: 'Install emulator'
@@ -75,11 +75,11 @@ steps:
     targetType: 'inline'
     script: 'curl -sL https://github.com/SourMesen/Mesen/releases/download/0.9.7/Mesen.0.9.7.zip > mesen.zip && ls && unzip mesen.zip'
 
-- task: Bash@3
-  displayName: 'Install screenshot tool'
-  inputs:
-    targetType: 'inline'
-    script: 'python3 -m pip install --user screenshot'
+# - task: Bash@3
+#   displayName: 'Install screenshot tool'
+#   inputs:
+#     targetType: 'inline'
+#     script: 'python3 -m pip install --user screenshot'
 
 - task: Bash@3
   displayName: 'Run emulator'
@@ -91,4 +91,4 @@ steps:
   displayName: 'Take screenshot after 1 second'
   inputs:
     targetType: 'inline'
-    script: 'screenshot OpenEmu --filename "build/screenshot.png"'
+    script: 'magick import "build/screenshot.png"'
