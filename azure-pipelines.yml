@@ -2,6 +2,11 @@
 trigger:
 - master
 
+pr:
+  paths:
+    exclude:
+    - build/*.png
+    
 pool:
   vmImage: 'vs2017-win2016'
 
