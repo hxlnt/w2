@@ -55,6 +55,12 @@ steps:
   condition: contains(variables['status'], 'error')
 
 - task: Bash@3
+  displayName: 'Configure git.'
+  inputs:
+    targetType: 'inline'
+    script: 'git config user.email "partytimehexcellent@gmail.com" && git config user.name "w2 Build Pipeline"'
+
+- task: Bash@3
   displayName: 'Push screenshot.'
   inputs:
     targetType: 'inline'
