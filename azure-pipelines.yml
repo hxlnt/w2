@@ -30,7 +30,7 @@ steps:
 - task: CmdLine@2
   displayName: 'Assemble source file (.NES ROM)'
   inputs:
-    script: 'D:\a\1\s\NESASM3\NESASM3.exe -lua D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.asm'
+    script: 'D:\a\1\s\NESASM3\NESASM3.exe D:\a\1\s\w2.asm'
 
 - task: Bash@3
   displayName: 'Check assembly status'
@@ -47,6 +47,20 @@ steps:
     targetType: 'inline'
     script: exit 1
   condition: contains(variables['status'], 'error')
+
+- powershell: (new-object System.Net.WebClient).DownloadFile('https://downloads.sourceforge.net/project/fceultra/Binaries/2.2.3/fceux-2.2.3-win32.zip?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Ffceultra%2Ffiles%2FBinaries%2F2.2.3%2Ffceux-2.2.3-win32.zip%2Fdownload&ts=1559878465','FCEUX.zip')
+  displayName: 'Download FCEUX for Windows'
+
+- task: ExtractFiles@1
+  displayName: 'Extract files'
+  inputs:
+    archiveFilePatterns: FCEUX.zip
+    destinationFolder: FCEUX
+
+- task: CmdLine@2
+  displayName: 'Assemble source file (.NES ROM)'
+  inputs:
+    script: 'D:\a\1\s\FCEUX\fceux.exe -lua D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.nes'
 
 - task: Bash@3
   displayName: 'Configure git.'
