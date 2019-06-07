@@ -41,14 +41,14 @@ steps:
 - task: CmdLine@2
   displayName: 'Assemble source file (.NES ROM)'
   inputs:
-    script: 'nesasm3 -lua ../build/screenshot.lua ../w2.asm'
+    script: 'D:\a\1\s\build2\NESASM3.exe -lua D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.asm'
 
 - task: Bash@3
   displayName: 'Check assembly status'
   inputs:
     targetType: 'inline'
     script: |
-      result=$(nesasm3/nesasm3 w2.asm | grep error)
+      result=$(D:\a\1\s\build2\NESASM3.exe D:\a\1\s\w2.asm | grep error)
       echo $result
       echo "##vso[task.setvariable variable=status]$result"
       
