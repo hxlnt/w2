@@ -5,17 +5,19 @@ trigger:
 pool:
   vmImage: 'vs2017-win2016'
 
-resources:
-  repositories:
-  - repository: 'w2'
-    type: 'github'
-    name: 'hxlnt/w2'
-    endpoint: 'hxlnt'
+# resources:
+#   repositories:
+#   - repository: 'w2'
+#     type: 'github'
+#     name: 'hxlnt/w2'
+#     endpoint: 'hxlnt'
 
 variables:
   status: 'fail'
 
 steps:
+- checkout: self
+  persistCredentials: "true"
 
 # - task: UsePythonVersion@0
 #   inputs:
