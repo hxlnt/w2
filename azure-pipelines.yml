@@ -22,17 +22,20 @@ steps:
 #     versionSpec: '3.6'
 #     architecture: 'x64'
 
-- task: Bash@3
+- powershell: (new-object System.Net.WebClient).DownloadFile('http://www.nespowerpak.com/nesasm/NESASM3.zip','NESASM3.zip')
   displayName: 'Download NESASM3 for Windows'
+
+- task: ExtractFiles@1
+  displayName: 'Extract files'
   inputs:
-    targetType: 'inline'
-    script: wget http://www.nespowerpak.com/nesasm/NESASM3.zip && unzip NESASM3.zip
+    archiveFilePatterns: NESASM3.zip
+    destinationFolder: build
 
 - task: Bash@3
   displayName: 'Assemble source file (.NES ROM)'
   inputs:
     targetType: 'inline'
-    script: 'nesasm3/nesasm3 -lua build/screenshot.lua w2.asm && sleep 1 && ls'
+    script: 'build/nesasm3/nesasm3 -lua build/screenshot.lua w2.asm && sleep 1 && ls'
     failOnStderr: true
 
 - task: Bash@3
