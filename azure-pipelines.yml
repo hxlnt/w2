@@ -3,44 +3,41 @@ trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-latest'
-
-resources:
-  repositories:
-  - repository: 'nesasm'
-    type: 'github'
-    name: 'camsaul/nesasm'
-    endpoint: 'hxlnt'
+  vmImage: 'vs2017-win2016'
 
 variables:
   status: 'fail'
 
 steps:
-- task: Bash@3
-  displayName: Get NES assembler source
+- checkout: self
+  persistCredentials: "true"
+
+- powershell: (new-object System.Net.WebClient).DownloadFile('http://www.nespowerpak.com/nesasm/NESASM3.zip','NESASM3.zip')
+  displayName: 'Download NESASM3 for Windows'
+
+- task: ExtractFiles@1
+  displayName: 'Extract files'
   inputs:
-    targetType: 'inline'
-    script: 'git clone https://github.com/camsaul/nesasm.git'
-      
-- task: Bash@3
-  displayName: 'Install NES assembler'
-  inputs:
-    targetType: 'inline'
-    script: 'cd nesasm/source && make && sudo make install'
+    archiveFilePatterns: NESASM3.zip
+    destinationFolder: NESASM3
 
 - task: Bash@3
-  displayName: 'Assemble source file (.NES ROM)'
+  displayName: 'Configure git.'
   inputs:
     targetType: 'inline'
-    script: 'nesasm/nesasm w2.asm'
-    failOnStderr: true
+    script: 'cd build && rm screenshot.png && ls'
+
+- task: CmdLine@2
+  displayName: 'Assemble source file (.NES ROM)'
+  inputs:
+    script: 'D:\a\1\s\NESASM3\NESASM3.exe D:\a\1\s\w2.asm'
 
 - task: Bash@3
   displayName: 'Check assembly status'
   inputs:
     targetType: 'inline'
     script: |
-      result=$(nesasm/nesasm w2.asm | grep error)
+      result=$(D:/a/1/s/NESASM3/NESASM3.exe D:/a/1/s/w2.asm | grep error)
       echo $result
       echo "##vso[task.setvariable variable=status]$result"
       
@@ -51,8 +48,53 @@ steps:
     script: exit 1
   condition: contains(variables['status'], 'error')
 
+- powershell: (new-object System.Net.WebClient).DownloadFile('https://downloads.sourceforge.net/project/fceultra/Binaries/2.2.3/fceux-2.2.3-win32.zip?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Ffceultra%2Ffiles%2FBinaries%2F2.2.3%2Ffceux-2.2.3-win32.zip%2Fdownload&ts=1559878465','FCEUX.zip')
+  displayName: 'Download FCEUX for Windows'
+
+- task: ExtractFiles@1
+  displayName: 'Extract files'
+  inputs:
+    archiveFilePatterns: FCEUX.zip
+    destinationFolder: FCEUX
+
+- powershell: Start-Process D:\a\1\s\FCEUX\fceux.exe "-lua=D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.nes"
+  displayName: 'Run FCEUX'
+
+- powershell: |
+    [void][reflection.assembly]::loadwithpartialname("system.windows.forms")
+    [system.windows.forms.sendkeys]::sendwait('{PRTSC}')
+    Get-Clipboard -Format Image | ForEach-Object -MemberName Save -ArgumentList "D:\a\1\s\build\screenshot.png"
+  displayName: 'Screenshot.'
+# - task: CmdLine@2
+#   displayName: 'Assemble source file (.NES ROM)'
+#   inputs:
+#     script: 'D:\a\1\s\FCEUX\fceux.exe -lua D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.nes'
+#   timeoutInMinutes: 1
+#   continueOnError: true
+
 - task: Bash@3
-  displayName: 'Install emulator'
+  displayName: 'Show folder contents'
   inputs:
     targetType: 'inline'
-    script: 'npm install jsnes'
+    script: 'cd D:/a/1/s/build && ls && echo "next" && cd D:/a/1/s && ls && echo "next2" && cd .. && ls'
+
+- task: Bash@3
+  displayName: 'Configure git.'
+  inputs:
+    targetType: 'inline'
+    script: 'git config user.email "partytimehexcellent@gmail.com" && git config user.name "w2 Build Pipeline"'
+
+- task: Bash@3
+  displayName: 'Remove NESASM.'
+  inputs:
+    targetType: 'inline'
+    script: 'rm NESASM3.zip && rm -rf NESASM3 && ls'
+
+- task: Bash@3
+  displayName: 'Push screenshot.'
+  env:
+      SOURCEBRANCH: $(Build.SourceBranchName)
+      PRBRANCH: $(System.PullRequest.SourceBranch)
+  inputs:
+    targetType: 'inline'
+    script: 'echo $SOURCEBRANCH && echo $PRBRANCH && cd D:/a/1/s/build && ls && git add . && git commit -m "Adds screenshot from build pipeline." && git push origin HEAD:$PRBRANCH'
