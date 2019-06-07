@@ -79,7 +79,7 @@ steps:
   displayName: 'Install ImageMagick'
   inputs:
     targetType: 'inline'
-    script: cd ImageMagick-7.0.8-48 && make clean && make && checkinstall && ldconfig /usr/local/lib
+    script: cd ImageMagick-7.0.8-48 && ./configure && make && make install
 
 - task: Bash@3
   displayName: 'Install emulator'
