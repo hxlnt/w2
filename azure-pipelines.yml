@@ -21,6 +21,12 @@ steps:
     archiveFilePatterns: NESASM3.zip
     destinationFolder: NESASM3
 
+- task: Bash@3
+  displayName: 'Configure git.'
+  inputs:
+    targetType: 'inline'
+    script: 'cd build && rm screenshot.png && ls'
+
 - task: CmdLine@2
   displayName: 'Assemble source file (.NES ROM)'
   inputs:
