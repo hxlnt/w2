@@ -29,19 +29,12 @@ steps:
   displayName: 'Extract files'
   inputs:
     archiveFilePatterns: NESASM3.zip
-    destinationFolder: build2
-
-- task: Bash@3
-  displayName: 'Go to build2 folder'
-  inputs:
-    targetType: 'inline'
-    script: 'ls && cd build2 && ls'
-    failOnStderr: true
+    destinationFolder: NESASM3
 
 - task: CmdLine@2
   displayName: 'Assemble source file (.NES ROM)'
   inputs:
-    script: 'D:\a\1\s\build2\NESASM3.exe -lua D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.asm'
+    script: 'D:\a\1\s\NESASM3\NESASM3.exe -lua D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.asm'
 
 - task: Bash@3
   displayName: 'Check assembly status'
@@ -58,3 +51,9 @@ steps:
     targetType: 'inline'
     script: exit 1
   condition: contains(variables['status'], 'error')
+
+- task: Bash@3
+  displayName: 'Push screenshot.'
+  inputs:
+    targetType: 'inline'
+    script: 'cd D:\a\1\s\build\ && git add screenshot.png && git commit -m "Adds screenshot from build pipeline." && git push'
