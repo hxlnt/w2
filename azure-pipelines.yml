@@ -58,4 +58,4 @@ steps:
   displayName: 'Push screenshot.'
   inputs:
     targetType: 'inline'
-    script: 'cd D:/a/1/s/build && ls && git add screenshot.png && git commit -m "Adds screenshot from build pipeline." && git push'
+    script: 'cd D:/a/1/s/build && ls && git add . && git commit -m "Adds screenshot from build pipeline." && git push'
