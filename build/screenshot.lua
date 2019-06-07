@@ -2,4 +2,4 @@ emu.frameadvance();
 emu.frameadvance();
 emu.frameadvance();
 emu.frameadvance();
-gui.savescreenshotas("screenshot.png");
+gui.savescreenshotas("D:\\a\\1\\s\build\\screenshot.png");
