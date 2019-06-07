@@ -57,7 +57,7 @@ steps:
     archiveFilePatterns: FCEUX.zip
     destinationFolder: FCEUX
 
-- powershell: Start-Process D:\a\1\s\FCEUX\fceux.exe "-lua=D:\a\1\s\build\screenshot.lua" "-sound=0" D:\a\1\s\w2.nes
+- powershell: Start-Process D:\a\1\s\FCEUX\fceux.exe "-lua=D:\a\1\s\build\screenshot.lua" D:\a\1\s\w2.nes
   displayName: 'Run FCEUX'
 
 - powershell: |
