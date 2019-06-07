@@ -16,6 +16,12 @@ variables:
   status: 'fail'
 
 steps:
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.6'
+    architecture: 'x64'
+
 - task: Bash@3
   displayName: Get NES assembler source
   inputs:
