@@ -8,6 +8,15 @@ trigger:
     exclude:
     - build/*.png
     
+pr:
+  branches:
+    include:
+    - master
+    - pull/*
+  paths:
+    exclude:
+    - build/*.png
+    
 pool:
   vmImage: 'vs2017-win2016'
 
