@@ -64,7 +64,7 @@ steps:
   displayName: 'Remove NESASM.'
   inputs:
     targetType: 'inline'
-    script: 'rm NESASM3.zip && rm -rf ../NESASM3 && ls'
+    script: 'rm NESASM3.zip && rm -rf NESASM3 && ls'
 
 - task: Bash@3
   displayName: 'Push screenshot.'
