@@ -68,7 +68,7 @@ steps:
 - task: AzureFileCopy@3
   inputs:
     SourcePath: '$(Build.Repository.LocalPath)/build/screenshot.png'
-    azureSubscription: 'Visual Studio Enterprise(dc8562fb-eaf4-4558-a222-ee41d1d94c94)'
+    azureSubscription: 'Visual Studio Enterprise ( dc8562fb-eaf4-4558-a222-ee41d1d94c94 )'
     Destination: 'AzureBlob'
     storage: 'w2blob'
     ContainerName: 'w2container'
