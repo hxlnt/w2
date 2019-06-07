@@ -65,6 +65,12 @@ steps:
   continueOnError: true
 
 - task: Bash@3
+  displayName: 'Show folder contents'
+  inputs:
+    targetType: 'inline'
+    script: 'cd D:/a/1/s/build && ls && echo "next" && cd D:/a/1/s && ls && echo "next2" && cd FCEUX && ls'
+
+- task: Bash@3
   displayName: 'Configure git.'
   inputs:
     targetType: 'inline'
