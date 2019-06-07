@@ -61,6 +61,7 @@ steps:
   displayName: 'Assemble source file (.NES ROM)'
   inputs:
     script: 'D:\a\1\s\FCEUX\fceux.exe -lua D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.nes'
+  timeoutInMinutes: 1
 
 - task: Bash@3
   displayName: 'Configure git.'
