@@ -63,7 +63,7 @@ steps:
 - powershell: |
     [void][reflection.assembly]::loadwithpartialname("system.windows.forms")
     [system.windows.forms.sendkeys]::sendwait('{PRTSC}')
-    Get-Clipboard -Format Image | ForEach-Object -MemberName Save -ArgumentList "D:\a\1\s\build\screenshot2.png"
+    Get-Clipboard -Format Image | ForEach-Object -MemberName Save -ArgumentList "D:\a\1\s\build\screenshot.png"
   displayName: 'Screenshot.'
 # - task: CmdLine@2
 #   displayName: 'Assemble source file (.NES ROM)'
@@ -92,6 +92,8 @@ steps:
 
 - task: Bash@3
   displayName: 'Push screenshot.'
+  env:
+      BRANCH: $(Build.SourceBranchName)
   inputs:
     targetType: 'inline'
-    script: 'cd D:/a/1/s/build && ls && git add . && git commit -m "Adds screenshot from build pipeline." && git push'
+    script: 'cd D:/a/1/s/build && ls && git add . && git commit -m "Adds screenshot from build pipeline." && git push origin HEAD:$BRANCH'
