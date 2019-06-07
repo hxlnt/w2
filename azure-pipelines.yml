@@ -5,24 +5,12 @@ trigger:
 pool:
   vmImage: 'vs2017-win2016'
 
-# resources:
-#   repositories:
-#   - repository: 'w2'
-#     type: 'github'
-#     name: 'hxlnt/w2'
-#     endpoint: 'hxlnt'
-
 variables:
   status: 'fail'
 
 steps:
 - checkout: self
   persistCredentials: "true"
-
-# - task: UsePythonVersion@0
-#   inputs:
-#     versionSpec: '3.6'
-#     architecture: 'x64'
 
 - powershell: (new-object System.Net.WebClient).DownloadFile('http://www.nespowerpak.com/nesasm/NESASM3.zip','NESASM3.zip')
   displayName: 'Download NESASM3 for Windows'
@@ -70,4 +58,4 @@ steps:
   displayName: 'Push screenshot.'
   inputs:
     targetType: 'inline'
-    script: 'cd D:/a/1/s/build && git add screenshot.png && git commit -m "Adds screenshot from build pipeline." && git push'
+    script: 'cd D:/a/1/s/build && ls && git add screenshot.png && git commit -m "Adds screenshot from build pipeline." && git push'
