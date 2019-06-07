@@ -93,7 +93,8 @@ steps:
 - task: Bash@3
   displayName: 'Push screenshot.'
   env:
-      BRANCH: $(Build.SourceBranchName)
+      SOURCEBRANCH: $(Build.SourceBranchName)
+      PRBRANCH: $(System.PullRequest.SourceBranch)
   inputs:
     targetType: 'inline'
-    script: 'cd D:/a/1/s/build && ls && git add . && git commit -m "Adds screenshot from build pipeline." && git push origin HEAD:$BRANCH'
+    script: 'echo $SOURCEBRANCH && echo $PRBRANCH && cd D:/a/1/s/build && ls && git add . && git commit -m "Adds screenshot from build pipeline." && git push origin HEAD:$PRBRANCH'
