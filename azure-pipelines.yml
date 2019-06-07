@@ -1,8 +1,9 @@
 
 trigger:
-- master
-
-pr:
+  branches:
+    include:
+    - master
+    - pull/*
   paths:
     exclude:
     - build/*.png
