@@ -65,23 +65,32 @@ steps:
     Get-Clipboard -Format Image | ForEach-Object -MemberName Save -ArgumentList "D:\a\1\s\build\screenshot.png"
   displayName: 'Screenshot.'
 
-- task: Bash@3
-  displayName: 'Configure git.'
+- task: AzureFileCopy@3
   inputs:
-    targetType: 'inline'
-    script: 'git config user.email "partytimehexcellent@gmail.com" && git config user.name "w2 Build Pipeline"'
+    SourcePath: '$(Build.Repository.LocalPath)/build/screenshot.png'
+    azureSubscription: 'Visual Studio Enterprise(dc8562fb-eaf4-4558-a222-ee41d1d94c94)'
+    Destination: 'AzureBlob'
+    storage: 'w2blob'
+    ContainerName: 'w2container'
+    outputStorageUri: 'https://w2blob.blob.core.windows.net/w2container'
 
-- task: Bash@3
-  displayName: 'Remove NESASM.'
-  inputs:
-    targetType: 'inline'
-    script: 'rm NESASM3.zip && rm -rf NESASM3 && ls'
+# - task: Bash@3
+#   displayName: 'Configure git.'
+#   inputs:
+#     targetType: 'inline'
+#     script: 'git config user.email "partytimehexcellent@gmail.com" && git config user.name "w2 Build Pipeline"'
 
-- task: Bash@3
-  displayName: 'Push screenshot.'
-  env:
-      SOURCEBRANCH: $(Build.SourceBranchName)
-      PRBRANCH: $(System.PullRequest.SourceBranch)
-  inputs:
-    targetType: 'inline'
-    script: 'echo $SOURCEBRANCH && echo $PRBRANCH && cd D:/a/1/s/build && ls && git add . && git commit -m "Adds screenshot from build pipeline." && git push origin HEAD:master'
+# - task: Bash@3
+#   displayName: 'Remove NESASM.'
+#   inputs:
+#     targetType: 'inline'
+#     script: 'rm NESASM3.zip && rm -rf NESASM3 && ls'
+
+# - task: Bash@3
+#   displayName: 'Push screenshot.'
+#   env:
+#       SOURCEBRANCH: $(Build.SourceBranchName)
+#       PRBRANCH: $(System.PullRequest.SourceBranch)
+#   inputs:
+#     targetType: 'inline'
+#     script: 'echo $SOURCEBRANCH && echo $PRBRANCH && cd D:/a/1/s/build && ls && git add . && git commit -m "Adds screenshot from build pipeline." && git push origin HEAD:master'
