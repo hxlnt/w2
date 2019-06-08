@@ -63,7 +63,7 @@ steps:
     destinationFolder: build/fceux
     cleanDestinationFolder: false
 
-- powershell: Start-Process D:\a\1\s\build\fceux\fceux.exe "-lua=D:\a\1\s\build\fceux\screenshot.lua D:\a\1\s\w2.nes"
+- powershell: Start-Process D:\a\1\s\build\fceux\fceux.exe "-lua D:\a\1\s\build\fceux\screenshot.lua D:\a\1\s\w2.nes"
   displayName: 'Run FCEUX'
 
 - powershell: |
