@@ -21,10 +21,10 @@ steps:
     destinationFolder: NESASM3
 
 - task: Bash@3
-  displayName: 'Remove previous screenshot.'
+  displayName: 'Check build folder'
   inputs:
     targetType: 'inline'
-    script: 'cd build && rm screenshot.png && ls'
+    script: 'cd build && ls'
 
 - task: CmdLine@2
   displayName: 'Assemble source file (.NES ROM)'
