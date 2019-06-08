@@ -60,6 +60,12 @@ steps:
 - powershell: Start-Process D:\a\1\s\build\fceux\fceux.exe "-lua D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.nes"
   displayName: 'Run FCEUX'
 
+- task: Bash@3
+  displayName: 'Configure git'
+  inputs:
+    targetType: 'inline'
+    script: git config user.email "partytimehexcellent@gmail.com" && git config user.name "w2 Build Pipeline"
+
 - task: AzureFileCopy@3
   inputs:
     SourcePath: '$(Build.Repository.LocalPath)/build/screenshot.png'
@@ -69,3 +75,10 @@ steps:
     ContainerName: 'w2container'
     outputStorageUri: 'https://w2blob.blob.core.windows.net/w2container'
 
+- task: Bash@3
+  displayName: 'Push screenshot back to branch'
+  env:
+    PRBRANCH: $(System.PullRequest.SourceBranch)
+  inputs:
+    targetType: 'inline'
+    script: echo $PRBRANCH && cd D:/a/1/s/build && ls && git add screenshot.png && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin HEAD:$PRBRANCH
