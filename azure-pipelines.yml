@@ -81,4 +81,4 @@ steps:
     PRBRANCH: $(System.PullRequest.SourceBranch)
   inputs:
     targetType: 'inline'
-    script: echo $PRBRANCH && cd $(Build.Repository.LocalPath)/build && ls && git add screenshot.png && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin HEAD:$PRBRANCH
+    script: echo $PRBRANCH && cd D:/a/1/s/build && ls && git add screenshot.png && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin HEAD:$PRBRANCH
