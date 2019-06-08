@@ -80,7 +80,7 @@ steps:
   displayName: 'Check folders again'
   inputs:
     targetType: 'inline'
-    script: 'cd D:/a/1/s/build/ && ls && cd D:/a/1/s/build/fceux && ls cd D:/a/1/s/ && ls'
+    script: 'cd D:/a/1/s/build/ && ls && cd D:/a/1/s/build/fceux && ls && cd D:/a/1/s/ && ls'
   continueOnError: true
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
 
@@ -90,5 +90,5 @@ steps:
       PRBRANCH: $(System.PullRequest.SourceBranch)
   inputs:
     targetType: 'inline'
-    script: echo $PRBRANCH && cd D:/a/1/s/build/ && ls && git add screenshot.png && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin HEAD:$PRBRANCH
+    script: echo $PRBRANCH && cd D:/a/1/s/build/ && ls && git add fceux/screenshot.png && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin HEAD:$PRBRANCH
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
