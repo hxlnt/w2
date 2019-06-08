@@ -52,7 +52,6 @@ steps:
     targetType: 'inline'
     script: exit 1
   condition: contains(variables['status'], 'error')
-  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
 
 - powershell: (new-object System.Net.WebClient).DownloadFile('https://downloads.sourceforge.net/project/fceultra/Binaries/2.2.3/fceux-2.2.3-win32.zip?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Ffceultra%2Ffiles%2FBinaries%2F2.2.3%2Ffceux-2.2.3-win32.zip%2Fdownload&ts=1559878465','FCEUX.zip')
   displayName: 'Download FCEUX for Windows'
