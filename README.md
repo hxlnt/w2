@@ -4,4 +4,6 @@
 
 ## Latest build screenshot
 
-![Latest screenshot](build/screenshot.png)
+The screenshot below is generated as part of the CI pipeline. It's taken from the FCEUX emulator running on a cloud-hosted Windows build agent.
+
+![Latest screenshot](https://w2blob.blob.core.windows.net/w2container/screenshot.png)
