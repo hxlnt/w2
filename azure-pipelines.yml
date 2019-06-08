@@ -77,6 +77,14 @@ steps:
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
 
 - task: Bash@3
+  displayName: 'Check folders again'
+  inputs:
+    targetType: 'inline'
+    script: 'cd D:/a/1/s/build/ && ls && cd D:/a/1/s/build/fceux && ls cd D:/a/1/s/ && ls'
+  continueOnError: true
+  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
+
+- task: Bash@3
   displayName: 'Push screenshot back to branch'
   env:
       PRBRANCH: $(System.PullRequest.SourceBranch)
