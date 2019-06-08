@@ -29,6 +29,14 @@ steps:
     script: 'cd build && ls'
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
 
+- task: Bash@3
+  displayName: 'Remove existing screenshot if present.'
+  inputs:
+    targetType: 'inline'
+    script: 'rm screenshot.png'
+  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
+  continueOnError: true
+
 - task: CmdLine@2
   displayName: 'Assemble source file (.NES ROM)'
   inputs:
@@ -84,6 +92,14 @@ steps:
     ContainerName: 'w2container'
     outputStorageUri: 'https://w2blob.blob.core.windows.net/w2container'
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
+
+- task: Bash@3
+  displayName: 'Remove FCEUX and NESASM3 if present'
+  inputs:
+    targetType: 'inline'
+    script: 'rm -rf fceux && rm -rf ../ && rm ../NESASM3.zip && rm ../FCEUX.zip'
+  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
+  continueOnError: true
 
 - task: Bash@3
   displayName: 'Push screenshot back to branch'
