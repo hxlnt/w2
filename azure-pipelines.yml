@@ -70,7 +70,7 @@ steps:
 - task: Bash@3
   displayName: 'Push screenshot back to branch'
   env:
-      PRBRANCH: $(Build.SourceBranchName)
+      PRBRANCH: $(System.PullRequest.SourceBranch)
   inputs:
     targetType: 'inline'
-    script: cd D:/a/1/s/build && ls && git add screenshot.png && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin HEAD:$PRBRANCH
+    script: echo $PRBRANCH && cd D:/a/1/s/build && ls && git add screenshot.png && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin HEAD:$PRBRANCH
