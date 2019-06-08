@@ -75,3 +75,10 @@ steps:
     ContainerName: 'w2container'
     outputStorageUri: 'https://w2blob.blob.core.windows.net/w2container'
 
+- task: Bash@3
+  displayName: 'Push screenshot back to branch'
+  env:
+    PRBRANCH: $(System.PullRequest.SourceBranch)
+  inputs:
+    targetType: 'inline'
+    script: echo $PRBRANCH && cd $(Build.Repository.LocalPath)/build && ls && git add screenshot.png && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin HEAD:$PRBRANCH
