@@ -8,6 +8,8 @@ variables:
   status: 'fail'
 
 steps:
+- checkout: self
+  persistCredentials: "true"
 
 - powershell: (new-object System.Net.WebClient).DownloadFile('http://www.nespowerpak.com/nesasm/NESASM3.zip','NESASM3.zip')
   displayName: 'Download NESASM3 for Windows'
