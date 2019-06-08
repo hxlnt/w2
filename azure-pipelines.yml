@@ -69,7 +69,7 @@ steps:
   displayName: 'Check for screenshots.'
   inputs:
     targetType: 'inline'
-    script: 'cd D:/a/1/s/build && ls'
+    script: 'cd D:/a/1/s/build/FCEUX && ls -la'
 
 - task: AzureFileCopy@3
   inputs:
