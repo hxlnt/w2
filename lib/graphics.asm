@@ -100,35 +100,36 @@ LoadBackground_PatchDone:           ;
 LoadBackground_PatchSkip:           ;
     RTS                             ;
 
-LoadPalette_All:                    ;  Load BG and SPR
-    LDA PPU_STATUS                  ;    palette data
-    LDA #$3F                        ;    stored at $[X][Y].
+LoadPalette:                        ;  Load palette data
+    STX pointer_high                ;    for background if 
+    STY pointer_low                 ;    A = #PALETTE_BG or for
+    TAX                             ;    sprites if A = 
+    LDA PPU_STATUS                  ;    #PALETTE_SPR.
+    LDA #$3F                        ;    
     STA PPU_ADDR                    ;    
-    LDA #$00                        ;
+    TXA                             ;
     STA PPU_ADDR                    ;
-    STX pointer_high                ;
-    STY pointer_low                 ;
     LDY #$00                        ;
-LoadPalette_BGLoop:                 ;
+LoadPalette_Loop:                   ;
     LDA [pointer_low], y            ;
     STA PPU_DATA                    ;
     INY                             ;
-    CPY #$20                        ;
-    BNE LoadPalette_BGLoop          ;
+    CPY #$10                        ;
+    BNE LoadPalette_Loop            ;
     RTS                             ;
 
-LoadSpr:                            ;
-    STA spr_length
-    STX pointer_high
-    STY pointer_low
-    LDY #$00                        
-LoadSprLoop:                                       
-    LDA [pointer_low], y                                   
-    STA $0300, y                                   
-    INY                                              
-    CPY spr_length                                         
-    BNE LoadSprLoop                                          
-    RTS                                                    
+LoadSpr:                            ;  Load sprite data at
+    STA spr_length                  ;    address $[X][Y].
+    STX pointer_high                ;
+    STY pointer_low                 ; 
+    LDY #$00                        ;
+LoadSprLoop:                        ;              
+    LDA [pointer_low], y            ;                      
+    STA $0300, y                    ;              
+    INY                             ;                
+    CPY spr_length                  ;                      
+    BNE LoadSprLoop                 ;                        
+    RTS                             ;                      
 
 SpriteDMA:                          ;  Transfer sprites to         
     LDA #$00                        ;    memory, starting at
