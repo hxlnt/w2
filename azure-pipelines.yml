@@ -54,16 +54,16 @@ steps:
   displayName: 'Extract files'
   inputs:
     archiveFilePatterns: FCEUX.zip
-    destinationFolder: FCEUX
+    destinationFolder: build/FCEUX
 
-- powershell: Start-Process D:\a\1\s\FCEUX\fceux.exe "-lua=D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.nes"
+- powershell: Start-Process D:\a\1\s\build\FCEUX\fceux.exe "-lua=D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.nes"
   displayName: 'Run FCEUX'
 
 - powershell: |
     [void][reflection.assembly]::loadwithpartialname("system.windows.forms")
     [system.windows.forms.sendkeys]::sendwait('{PRTSC}')
-    Get-Clipboard -Format Image | ForEach-Object -MemberName Save -ArgumentList "D:\a\1\s\build\screenshot.png"
-  displayName: 'Screenshot.'
+    Get-Clipboard -Format Image | ForEach-Object -MemberName Save -ArgumentList "D:\a\1\s\build\screenshot2.png"
+  displayName: 'Take fullscreen screenshot.'
 
 - task: AzureFileCopy@3
   inputs:
@@ -86,11 +86,8 @@ steps:
 #     targetType: 'inline'
 #     script: 'rm NESASM3.zip && rm -rf NESASM3 && ls'
 
-# - task: Bash@3
-#   displayName: 'Push screenshot.'
-#   env:
-#       SOURCEBRANCH: $(Build.SourceBranchName)
-#       PRBRANCH: $(System.PullRequest.SourceBranch)
-#   inputs:
-#     targetType: 'inline'
-#     script: 'echo $SOURCEBRANCH && echo $PRBRANCH && cd D:/a/1/s/build && ls && git add . && git commit -m "Adds screenshot from build pipeline." && git push origin HEAD:master'
+- task: Bash@3
+  displayName: 'Check for screenshots.'
+  inputs:
+    targetType: 'inline'
+    script: 'cd D:/a/1/s/build && ls'
