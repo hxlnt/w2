@@ -1,7 +1,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  w2 // hxlnt 2019
 
-
+BAD CODE!
     .include "game/header.asm"      ;  Import header.
 
     .rsset $0000
