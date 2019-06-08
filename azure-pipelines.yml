@@ -63,7 +63,7 @@ steps:
     destinationFolder: build/fceux
     cleanDestinationFolder: false
 
-- powershell: Start-Process D:\a\1\s\build\fceux\fceux.exe "-lua=D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.nes"
+- powershell: Start-Process D:\a\1\s\build\fceux\fceux.exe "-lua=D:\a\1\s\build\fceux\screenshot.lua D:\a\1\s\w2.nes"
   displayName: 'Run FCEUX'
 
 - powershell: |
@@ -76,7 +76,7 @@ steps:
   displayName: 'Check FCEUX folder again.'
   inputs:
     targetType: 'inline'
-    script: 'cd D:/a/1/s/build/fceux && ls -la'
+    script: 'cd D:/a/1/s/build && ls -la && cd D:/a/1/s/build/fceux && ls -la'
 
 - task: AzureFileCopy@3
   inputs:
