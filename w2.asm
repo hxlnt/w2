@@ -7,7 +7,7 @@
     .rsset $0000
     .include "lib/variables.asm"    ;  Import library variables.
     .include "game/variables.asm"   ;  Import game variables.
-    .include "game/constants.asm"   ;  Import game constants.
+    .include "game/gamestates.asm"  ;  Import gamestate list.
 
     .rsset $6000
     .include "game/wram.asm"        ;  Import WRAM variables.
@@ -92,10 +92,44 @@ NMI:                                ;  Start NMI.
 
     JSR SpriteDMA                   ;  Transfer sprites.
 
-    LDX #HIGH(attract_txt)          ;  Write end_txt to the
-    LDY #LOW(attract_txt)           ;    background.
+    JSR ReadGamepad1
+    LDA buttons1read
+    AND #GAMEPAD_B
+    CMP #GAMEPAD_B
+    BEQ SetEnd
+    LDA buttons1read
+    AND #GAMEPAD_A
+    CMP #GAMEPAD_A
+    BEQ SetAttract
+    LDA gamestate
+    CMP #ATTRACT 
+    BEQ NMIAttract
+    JMP NMIEnd
+SetAttract:
+    LDA #ATTRACT
+    STA gamestate
+    JMP NMIAttract
+SetEnd:
+    LDA #END 
+    STA gamestate
+    JMP NMIEnd
+NMIAttract:
+    LDX #HIGH(attract_pal)          ;  Load attract_pal into
+    LDY #LOW(attract_pal)           ;    sprite palette.
+    LDA #PALETTE_BG                 ;
+    JSR LoadPalette                 ;
+    JMP NMIDone
+
+NMIEnd:
+    LDX #HIGH(end_pal)          ;  Load attract_pal into
+    LDY #LOW(end_pal)           ;    sprite palette.
+    LDA #PALETTE_BG                ;
+    JSR LoadPalette                 ;
+    LDX #HIGH(end_txt)          ;  Write end_txt to the
+    LDY #LOW(end_txt)           ;    background.
     JSR LoadBackground_Patch        ;
 
+NMIDone:
     JSR Scroll                      ;  Scroll background.
 
     PLA                             ;  Pop Y, X, and A off the
