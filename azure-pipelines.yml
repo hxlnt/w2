@@ -1,6 +1,12 @@
 trigger:
-- master
-    
+  branches:
+    include:
+    - master
+    - pull/*
+  paths:
+    exclude:
+    - build/screenshot.png
+
 pool:
   vmImage: 'vs2017-win2016'
 
