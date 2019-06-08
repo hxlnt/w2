@@ -25,7 +25,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: 'cd D:/a/1/s/build/fceux && ls -la'
-    
+
 - task: Bash@3
   displayName: 'Configure git.'
   inputs:
@@ -60,7 +60,7 @@ steps:
   displayName: 'Extract files'
   inputs:
     archiveFilePatterns: FCEUX.zip
-    destinationFolder: fceux
+    destinationFolder: build/fceux
 
 - powershell: Start-Process D:\a\1\s\build\fceux\fceux.exe "-lua=D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.nes"
   displayName: 'Run FCEUX'
