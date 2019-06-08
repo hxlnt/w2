@@ -8,8 +8,6 @@ variables:
   status: 'fail'
 
 steps:
-- checkout: self
-  persistCredentials: "true"
 
 - powershell: (new-object System.Net.WebClient).DownloadFile('http://www.nespowerpak.com/nesasm/NESASM3.zip','NESASM3.zip')
   displayName: 'Download NESASM3 for Windows'
@@ -19,12 +17,6 @@ steps:
   inputs:
     archiveFilePatterns: NESASM3.zip
     destinationFolder: NESASM3
-
-# - task: Bash@3
-#   displayName: 'Check FCEUX folder.'
-#   inputs:
-#     targetType: 'inline'
-#     script: 'cd D:/a/1/s/build/fceux && ls -la'
 
 - task: Bash@3
   displayName: 'Remove previous screenshot.'
@@ -66,18 +58,6 @@ steps:
 - powershell: Start-Process D:\a\1\s\build\fceux\fceux.exe "-lua D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.nes"
   displayName: 'Run FCEUX'
 
-# - powershell: |
-#     [void][reflection.assembly]::loadwithpartialname("system.windows.forms")
-#     [system.windows.forms.sendkeys]::sendwait('{PRTSC}')
-#     Get-Clipboard -Format Image | ForEach-Object -MemberName Save -ArgumentList "D:\a\1\s\build\screenshot2.png"
-#   displayName: 'Take fullscreen screenshot.'
-
-# - task: Bash@3
-#   displayName: 'Check FCEUX folder again.'
-#   inputs:
-#     targetType: 'inline'
-#     script: 'cd D:/a/1/s/build && ls -la && cd D:/a/1/s/build/fceux && ls -la'
-
 - task: AzureFileCopy@3
   inputs:
     SourcePath: '$(Build.Repository.LocalPath)/build/screenshot.png'
@@ -86,16 +66,4 @@ steps:
     storage: 'w2blob'
     ContainerName: 'w2container'
     outputStorageUri: 'https://w2blob.blob.core.windows.net/w2container'
-
-# - task: Bash@3
-#   displayName: 'Configure git.'
-#   inputs:
-#     targetType: 'inline'
-#     script: 'git config user.email "partytimehexcellent@gmail.com" && git config user.name "w2 Build Pipeline"'
-
-# - task: Bash@3
-#   displayName: 'Remove NESASM.'
-#   inputs:
-#     targetType: 'inline'
-#     script: 'rm NESASM3.zip && rm -rf NESASM3 && ls'
 
