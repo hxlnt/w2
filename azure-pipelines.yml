@@ -21,6 +21,12 @@ steps:
     destinationFolder: NESASM3
 
 - task: Bash@3
+  displayName: 'Check FCEUX folder.'
+  inputs:
+    targetType: 'inline'
+    script: 'cd D:/a/1/s/build/fceux && ls -la'
+    
+- task: Bash@3
   displayName: 'Configure git.'
   inputs:
     targetType: 'inline'
@@ -54,9 +60,9 @@ steps:
   displayName: 'Extract files'
   inputs:
     archiveFilePatterns: FCEUX.zip
-    destinationFolder: build/FCEUX
+    destinationFolder: fceux
 
-- powershell: Start-Process D:\a\1\s\build\FCEUX\fceux.exe "-lua=D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.nes"
+- powershell: Start-Process D:\a\1\s\build\fceux\fceux.exe "-lua=D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.nes"
   displayName: 'Run FCEUX'
 
 - powershell: |
@@ -66,10 +72,10 @@ steps:
   displayName: 'Take fullscreen screenshot.'
 
 - task: Bash@3
-  displayName: 'Check for screenshots.'
+  displayName: 'Check FCEUX folder again.'
   inputs:
     targetType: 'inline'
-    script: 'cd D:/a/1/s/build/FCEUX && ls -la'
+    script: 'cd D:/a/1/s/build/fceux && ls -la'
 
 - task: AzureFileCopy@3
   inputs:
