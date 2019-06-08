@@ -24,9 +24,15 @@
 
     JSR TurnScreenOff               ;  Turn screen off.
     
-    LDX #HIGH(attract_pal)          ;  Load attract_pal palette.
-    LDY #LOW(attract_pal)           ;  
-    JSR LoadPalette_All             ;
+    LDX #HIGH(attract_pal)          ;  Load attract_pal into
+    LDY #LOW(attract_pal)           ;    background palette.
+    LDA #PALETTE_BG                 ;
+    JSR LoadPalette                 ;
+
+    LDX #HIGH(attract_pal)          ;  Load attract_pal into
+    LDY #LOW(attract_pal)           ;    sprite palette.
+    LDA #PALETTE_SPR                ;
+    JSR LoadPalette                 ;
 
     LDX #HIGH(attract_bg)           ;  Load attract_bg in top-
     LDY #NMTBL_TOP_LEFT             ;    left nametable.
