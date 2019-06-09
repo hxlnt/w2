@@ -97,7 +97,7 @@ steps:
   displayName: 'Remove FCEUX and NESASM3 if present'
   inputs:
     targetType: 'inline'
-    script: 'cd .. && rm -rf build/fceux && rm -rf NESASM3 && rm FCEUX.zip'
+    script: 'cd .. && rm -rf build/fceux && rm -rf NESASM3'
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
   continueOnError: true
 
