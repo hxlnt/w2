@@ -97,7 +97,7 @@ steps:
   displayName: 'Remove FCEUX and NESASM3 if present'
   inputs:
     targetType: 'inline'
-    script: 'rm NESASM3.zip FCEUX.zip fceux/7z.dll fceux/auxlib.lua fceux/fceux.chm fceux/fceux.exe fceux/lua5.1.dll fceux/lua51.dll fceux/taseditor.chm && rm -rf fceux/luaScripts/ fceux/palettes/ fceux/tools/ NESASM3 && ls && cd build && ls'
+    script: 'rm NESASM3.zip FCEUX.zip build/fceux/7z.dll build/fceux/auxlib.lua build/fceux/fceux.chm build/fceux/fceux.exe build/fceux/lua5.1.dll build/fceux/lua51.dll build/fceux/taseditor.chm && rm -rf build/fceux/luaScripts/ build/fceux/palettes/ build/fceux/tools/ NESASM3 && ls && cd build && ls'
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
 
 - task: Bash@3
