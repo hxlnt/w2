@@ -97,7 +97,7 @@ steps:
   displayName: 'Remove FCEUX and NESASM3 if present'
   inputs:
     targetType: 'inline'
-    script: 'rm -rf build/fceux && rm -rf NESASM3 && ls && cd build && ls'
+    script: 'rm NESASM3.zip FCEUX.zip fceux/7z.dll fceux/auxlib.lua fceux/fceux.chm fceux/fceux.exe fceux/lua5.1.dll fceux/lua51.dll fceux/taseditor.chm && rm -rf fceux/luaScripts/ fceux/palettes/ fceux/tools/ NESASM3 && ls && cd build && ls'
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
 
 - task: Bash@3
@@ -106,5 +106,5 @@ steps:
     PRBRANCH: $(System.PullRequest.SourceBranch)
   inputs:
     targetType: 'inline'
-    script: echo $PRBRANCH && cd D:/a/1/s/build && ls && git add screenshot.png && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin HEAD:$PRBRANCH
+    script: echo $PRBRANCH && cd D:/a/1/s/build && ls && git add . && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin HEAD:$PRBRANCH
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
