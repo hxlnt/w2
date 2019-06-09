@@ -71,6 +71,7 @@ steps:
     destinationFolder: build/fceux
     cleanDestinationFolder: false
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
+  continueOnError: true
 
 - powershell: Start-Process D:\a\1\s\build\fceux\fceux.exe "-lua D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.nes"
   displayName: 'Run FCEUX'
