@@ -92,8 +92,8 @@ NMI:                                ;  Start NMI.
 
     JSR SpriteDMA                   ;  Transfer sprites.
 
-    LDX #HIGH(end_txt)          ;  Write end_txt to the
-    LDY #LOW(end_txt)           ;    background.
+    LDX #HIGH(attract_txt)          ;  Write end_txt to the
+    LDY #LOW(attract_txt)           ;    background.
     JSR LoadBackground_Patch        ;
 
     JSR Scroll                      ;  Scroll background.
