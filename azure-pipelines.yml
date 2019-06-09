@@ -84,16 +84,6 @@ steps:
     script: git config user.email "partytimehexcellent@gmail.com" && git config user.name "w2 Build Pipeline"
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
 
-- task: AzureFileCopy@3
-  inputs:
-    SourcePath: '$(Build.Repository.LocalPath)/build/screenshot.png'
-    azureSubscription: 'Visual Studio Enterprise(dc8562fb-eaf4-4558-a222-ee41d1d94c94)'
-    Destination: 'AzureBlob'
-    storage: 'w2blob'
-    ContainerName: 'w2container'
-    outputStorageUri: 'https://w2blob.blob.core.windows.net/w2container'
-  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
-
 - task: Bash@3
   displayName: 'Remove FCEUX and NESASM3 if present'
   inputs:
