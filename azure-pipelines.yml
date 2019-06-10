@@ -33,7 +33,7 @@ steps:
   displayName: 'Remove existing screenshot if present.'
   inputs:
     targetType: 'inline'
-    script: 'rm screenshot.png'
+    script: 'rm build/screenshot.png'
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
   continueOnError: true
 
