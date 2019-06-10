@@ -5,6 +5,10 @@
     LDA #$00                        ;  Clear isPatchDone flag
     STA isPatchDone                 ;    in LoadBackground_Patch.
 
+    ;LDA #ATTRACT                    ;  Set gamestate as
+    LDA #$00
+    STA gamestate                   ;    #ATTRACT.
+
     LDA #%00000111                  ;  Set speed at which patch
     STA patch_speed                 ;    tiles pop in.
 
