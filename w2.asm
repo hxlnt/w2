@@ -18,8 +18,8 @@
 
     LDA #%00001110                  ;  Configure banks.
     STA bank_config                 ;
-    
-    .include "lib/console_init.asm" ;  Import and run initial-
+
+    .include "lib/console_init.asm" ;  Import and run initial 
     .include "game/init.asm"        ;    ization subroutines.
 
     JSR TurnScreenOff               ;  Turn screen off.
@@ -64,7 +64,6 @@ GameLoop:                           ;  Start game loop.
     .include "lib/lookup_tables.asm";  Import lookup tables.
     .include "game/subroutines.asm" ;  Import game subroutines.
 
-
     .bank 1 ;;;;;;;;;;;;;;;;;;;;;;;;;  BANK 1: AUDIO                         
     .org $A000 ;;;;;;;;;;;;;;;;;;;;;;  $A000 - $BFFF
 
@@ -90,45 +89,50 @@ NMI:                                ;  Start NMI.
 
     JSR Counter                     ;  Increment counters.
 
+    LDA gamestate
+    BNE NMITestEnd
+    JSR $E040
+    JMP NMITestDone
+NMITestEnd:
+    JSR $E060
+NMITestDone:
+
     JSR SpriteDMA                   ;  Transfer sprites.
 
-    JSR ReadGamepad1
-    LDA buttons1read
-    AND #GAMEPAD_B
-    CMP #GAMEPAD_B
-    BEQ SetEnd
-    LDA buttons1read
-    AND #GAMEPAD_A
-    CMP #GAMEPAD_A
-    BEQ SetAttract
-    LDA gamestate
-    CMP #ATTRACT 
-    BEQ NMIAttract
-    JMP NMIEnd
-SetAttract:
-    LDA #ATTRACT
-    STA gamestate
-    JMP NMIAttract
-SetEnd:
-    LDA #END 
-    STA gamestate
-    JMP NMIEnd
+    JMP NMIDone                     ;  Jump to NMI cleanup.
+
+    .org $E040
 NMIAttract:
+    LDA framecounter
+    CMP #$2B
+    BEQ NMIAttractPalSwap
+    LDA #$01
+    STA gamestate
+    RTS
+NMIAttractPalSwap:
     LDX #HIGH(attract_pal)          ;  Load attract_pal into
-    LDY #LOW(attract_pal)           ;    sprite palette.
+    LDY #LOW(attract_pal)           ;    BG palette.
     LDA #PALETTE_BG                 ;
     JSR LoadPalette                 ;
-    JMP NMIDone
+    RTS
 
+
+    .org $E0C0
 NMIEnd:
-    LDX #HIGH(end_pal)          ;  Load attract_pal into
-    LDY #LOW(end_pal)           ;    sprite palette.
-    LDA #PALETTE_BG                ;
+    LDA framecounter
+    CMP #$2B
+    BEQ NMIEndPalSwap
+    LDA #$00
+    STA gamestate
+    RTS
+NMIEndPalSwap:
+    LDX #HIGH(end_pal)              ;  Load attract_pal into
+    LDY #LOW(end_pal)               ;    BG palette.
+    LDA #PALETTE_BG                 ;
     JSR LoadPalette                 ;
-    LDX #HIGH(end_txt)          ;  Write end_txt to the
-    LDY #LOW(end_txt)           ;    background.
-    JSR LoadBackground_Patch        ;
+    RTS
 
+    .org $E140
 NMIDone:
     JSR Scroll                      ;  Scroll background.
 
@@ -140,6 +144,10 @@ NMIDone:
     RTI                             ;
 
     .include "lib/mmc1.asm"         ;  Include MMC1 subroutines.
+    
+gameloop_table:
+    .dw $E040
+    .dw $E0C0
 
     .org $FFFA                      ;  Set last three bytes as
     .dw NMI                         ;    NMI, Reset, and IRQ
