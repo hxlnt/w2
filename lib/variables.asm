@@ -3,6 +3,8 @@
 
 
 music           .rs 16              ;  Leave 16 bytes for music.
+gameloopaddr    .rs 2               ;  Store game loop address.
+gamestate       .rs 1               ;  Store game state.
 bank_config     .rs 1               ;  Store bank config.
 buttons1        .rs 1               ;  Store gamepad 1 reads.
 buttons1pending .rs 1               ;  Store temporary reads.
@@ -12,7 +14,6 @@ buttons2pending .rs 1               ;  Store temporary reads.
 buttons2read    .rs 1               ;  Store debounced reads.           
 framecounter    .rs 1               ;  Store frames elapse.
 frames          .rs 1               ;  Store temporary count.
-gamestate       .rs 1               ;  Store game state.
 isPatchDone     .rs 1               ;  Store BG patch flag.
 minutes         .rs 1               ;  Store minutes elapsed.
 patch_index     .rs 1               ;  Store BG patch index.
