@@ -33,7 +33,7 @@ steps:
   displayName: 'Remove existing screenshot if present.'
   inputs:
     targetType: 'inline'
-    script: 'rm screenshot.png'
+    script: 'rm build/screenshot.png'
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
   continueOnError: true
 
@@ -97,6 +97,6 @@ steps:
     PRBRANCH: $(System.PullRequest.SourceBranch)
   inputs:
     targetType: 'inline'
-    script: echo $PRBRANCH && cd D:/a/1/s/ && ls && git add . && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin HEAD:$PRBRANCH
+    script: cd D:/a/1/s/build && ls -la && echo $PRBRANCH && cd D:/a/1/s/ && ls && git add . && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin HEAD:$PRBRANCH
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
   continueOnError: true
