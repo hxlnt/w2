@@ -7,7 +7,6 @@
     .rsset $0000
     .include "lib/variables.asm"    ;  Import library variables.
     .include "game/variables.asm"   ;  Import game variables.
-    .include "game/gamestates.asm"  ;  Import gamestate list.
 
     .rsset $6000
     .include "game/wram.asm"        ;  Import WRAM variables.
@@ -53,16 +52,20 @@
 
 GameLoop:                           ;  Start game loop.
 
-    LDY framecounter                ;  Set scroll_x with
-    LDA sine, y                     ;    incremental values from
-    STA scroll_x                    ;    sine lookup table.
-
+    LDX gamestate                   ;  Use current gamestate
+    LDA gameloop_table, x           ;    as index for game loop
+    PHA                             ;    jump table.
+    INX                             ;
+    LDA gameloop_table, x           ;
+    PHA                             ;            
+    RTS                             ;
     JMP GameLoop                    ;  End game loop.
 
     .include "lib/counters.asm"     ;  Import counter and I/O
     .include "lib/io.asm"           ;    subroutines.
     .include "lib/lookup_tables.asm";  Import lookup tables.
     .include "game/subroutines.asm" ;  Import game subroutines.
+    .include "game/gameengine.asm"  ;  Import gamestate list.
 
     .bank 1 ;;;;;;;;;;;;;;;;;;;;;;;;;  BANK 1: AUDIO                         
     .org $A000 ;;;;;;;;;;;;;;;;;;;;;;  $A000 - $BFFF
@@ -87,52 +90,14 @@ NMI:                                ;  Start NMI.
     TYA                             ;
     PHA                             ;
 
-    JSR Counter                     ;  Increment counters.
+    LDX gamestate                   ;  Use current gamestate as
+    LDA nmiloop_table, x            ;    as index for NMI loop
+    PHA                             ;    jump table.
+    INX                             ;
+    LDA nmiloop_table, x            ;
+    PHA                             ;
+    RTS                             ;
 
-    LDA gamestate
-    BNE NMITestEnd
-    JSR $E040
-    JMP NMITestDone
-NMITestEnd:
-    JSR $E060
-NMITestDone:
-
-    JSR SpriteDMA                   ;  Transfer sprites.
-
-    JMP NMIDone                     ;  Jump to NMI cleanup.
-
-    .org $E040
-NMIAttract:
-    LDA framecounter
-    CMP #$2B
-    BEQ NMIAttractPalSwap
-    LDA #$01
-    STA gamestate
-    RTS
-NMIAttractPalSwap:
-    LDX #HIGH(attract_pal)          ;  Load attract_pal into
-    LDY #LOW(attract_pal)           ;    BG palette.
-    LDA #PALETTE_BG                 ;
-    JSR LoadPalette                 ;
-    RTS
-
-
-    .org $E0C0
-NMIEnd:
-    LDA framecounter
-    CMP #$2B
-    BEQ NMIEndPalSwap
-    LDA #$00
-    STA gamestate
-    RTS
-NMIEndPalSwap:
-    LDX #HIGH(end_pal)              ;  Load attract_pal into
-    LDY #LOW(end_pal)               ;    BG palette.
-    LDA #PALETTE_BG                 ;
-    JSR LoadPalette                 ;
-    RTS
-
-    .org $E140
 NMIDone:
     JSR Scroll                      ;  Scroll background.
 
@@ -144,10 +109,6 @@ NMIDone:
     RTI                             ;
 
     .include "lib/mmc1.asm"         ;  Include MMC1 subroutines.
-    
-gameloop_table:
-    .dw $E040
-    .dw $E0C0
 
     .org $FFFA                      ;  Set last three bytes as
     .dw NMI                         ;    NMI, Reset, and IRQ
