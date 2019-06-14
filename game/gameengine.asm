@@ -1,29 +1,89 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  Game engine
 
-    .org $8302
+    .org $8302                      ;  Start game loop for
+GameLoopAttract:                    ;    ATTRACT gamestate.
+
     LDY framecounter                ;  Set scroll_x with
     LDA sine, y                     ;    incremental values from
     STA scroll_x                    ;    sine lookup table.
-    JMP GameLoop
 
-    .org $8402
-    LDA #$00
-    STA scroll_x
-    JMP GameLoop
+    JMP GameLoop                    ;  End game loop.
 
-    .org $8502
-    JSR Counter
-    JMP NMIDone
+    .org $8402                      ;  Start game loop for
+GameLoopEnd:                        ;    END gamestate.
 
-    .org $8602
-    JMP NMIDone
+    JMP GameLoop                    ;  End game loop.
 
-; $827F
-gameloop_table:
-    .db $83, $01
-    .db $84, $01
+    .org $8502                      ;  Start NMI loop for
+NMIAttractInit:                     ;    ATTRACT gamestate.
 
-nmiloop_table:
-    .db $85, $01
-    .db $86, $01
+    LDA gamestate                   ;  If init flag on gamestate
+    AND #%10000000                  ;    is 0, branch to post-
+    BEQ NMIAttract                  ;    init ATTRACT code.
+
+    LDX #HIGH(attract_pal)
+    LDY #LOW(attract_pal)
+    LDA #PALETTE_BG
+    JSR LoadPalette
+
+    LDA gamestate                   ;  Clear init flag on
+    AND #%01111111                  ;    gamestate.
+    STA gamestate                   ;
+
+    JMP NMIDone                     ;  End NMI loop.
+
+NMIAttract:                         ;  Initialize ATTRACT.
+
+    LDX #HIGH(attract_txt)
+    LDY #LOW(attract_txt)
+    JSR LoadBackground_Patch
+
+    LDA framecounter
+    BNE NMIAttractDone
+    LDA #%10000010
+    STA gamestate
+
+NMIAttractDone:                     ;  End NMI loop.
+    JMP NMIDone                     ; 
+
+    .org $8602                      ;  Start NMI loop for END
+NMIEndInit:                         ;    gamestate.
+
+    LDA gamestate                   ;  If init flag on gamestate
+    AND #%10000000                  ;    is 0, branch to post-
+    BEQ NMIEnd                      ;    init END code.
+
+    LDX #HIGH(end_pal)
+    LDY #LOW(end_pal)
+    LDA #PALETTE_BG
+    JSR LoadPalette
+
+    LDA gamestate                   ;  Clear init flag on
+    AND #%01111111                  ;    gamestate.
+    STA gamestate                   ;
+
+    JMP NMIDone                     ;  End NMI loop.
+
+NMIEnd:                             ; 
+
+    LDX #HIGH(end_txt)
+    LDY #LOW(end_txt)
+    JSR LoadBackground_Patch
+
+    LDA framecounter
+    CMP #$80
+    BNE NMIEndDone
+    LDA #%10000000
+    STA gamestate
+
+NMIEndDone:                         ;  End NMI loop.
+    JMP NMIDone                     ; 
+
+gameloop_table:                     ;  List address byte (minus
+    .db $83, $01                    ;    1) for gamestate-
+    .db $84, $01                    ;    specific game loop.
+
+nmiloop_table:                      ;  List address bytes (minus
+    .db $85, $01                    ;    1) for gamestate-
+    .db $86, $01                    ;    specific NMI loop.

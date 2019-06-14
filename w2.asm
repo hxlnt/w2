@@ -18,13 +18,13 @@
     LDA #%00001110                  ;  Configure banks.
     STA bank_config                 ;
 
-    .include "lib/console_init.asm" ;  Import and run initial 
+    .include "lib/console_init.asm" ;  Import and run initial-
     .include "game/init.asm"        ;    ization subroutines.
 
     JSR TurnScreenOff               ;  Turn screen off.
     
-    LDX #HIGH(end_pal)          ;  Load attract_pal into
-    LDY #LOW(end_pal)           ;    background palette.
+    LDX #HIGH(attract_pal)          ;  Load attract_pal into
+    LDY #LOW(attract_pal)           ;    background palette.
     LDA #PALETTE_BG                 ;
     JSR LoadPalette                 ;
 
@@ -52,13 +52,17 @@
 
 GameLoop:                           ;  Start game loop.
 
-    LDX gamestate                   ;  Use current gamestate
-    LDA gameloop_table, x           ;    as index for game loop
-    PHA                             ;    jump table.
-    INX                             ;
-    LDA gameloop_table, x           ;
+    LDA gamestate                   ;  Execute game loop code
+    AND #%01111111                  ;    related to current
+    TAX                             ;    gamestate. Use
+    LDX gamestate                   ;    gamestate as index for
+    LDA gameloop_table, x           ;    game loop jump table.   
+    PHA                             ;    
+    INX                             ;    
+    LDA gameloop_table, x           ;    
     PHA                             ;            
     RTS                             ;
+
     JMP GameLoop                    ;  End game loop.
 
     .include "lib/counters.asm"     ;  Import counter and I/O
@@ -90,11 +94,15 @@ NMI:                                ;  Start NMI.
     TYA                             ;
     PHA                             ;
 
-    LDX gamestate                   ;  Use current gamestate as
-    LDA nmiloop_table, x            ;    as index for NMI loop
-    PHA                             ;    jump table.
-    INX                             ;
-    LDA nmiloop_table, x            ;
+    JSR Counter                     ;  Increment counters.
+
+    LDA gamestate                   ;  Execute NMI code  related
+    AND #%01111111                  ;    to the current
+    TAX                             ;    gamestate. Use
+    LDA nmiloop_table, x            ;    gamestate as index for        
+    PHA                             ;    NMI loop jump table.      
+    INX                             ;    
+    LDA nmiloop_table, x            ;    
     PHA                             ;
     RTS                             ;
 
@@ -106,16 +114,17 @@ NMIDone:
     PLA                             ;
     TAX                             ;
     PLA                             ;
-    RTI                             ;
 
-    .include "lib/mmc1.asm"         ;  Include MMC1 subroutines.
+    RTI                             ;  Return from NMI.
+
+    .include "lib/mmc1.asm"         ;  Import MMC1 subroutines.
 
     .org $FFFA                      ;  Set last three bytes as
     .dw NMI                         ;    NMI, Reset, and IRQ
     .dw Reset                       ;    vectors.
-    .dw 0
+    .dw 0                           ;
 
     .bank 4 ;;;;;;;;;;;;;;;;;;;;;;;;;  BANK 4: CHR-ROM
     .org $0000 ;;;;;;;;;;;;;;;;;;;;;;  $0000 - $1FFF
 
-    .incbin "game/data/graphics.chr";  Include graphics binary.
+    .incbin "game/data/graphics.chr";  Import graphics binary.
