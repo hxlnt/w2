@@ -55,7 +55,7 @@ GameLoop:                           ;  Start game loop.
     LDA gamestate                   ;  Execute game loop code
     AND #%01111111                  ;    related to current
     TAX                             ;    gamestate. Use
-    LDX gamestate                   ;    gamestate as index for
+    ;LDX gamestate                   ;    gamestate as index for
     LDA gameloop_table, x           ;    game loop jump table.   
     PHA                             ;    
     INX                             ;    

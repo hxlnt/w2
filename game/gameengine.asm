@@ -1,6 +1,12 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  Game engine
 
+
+ATTRACT         = %00000000
+ATTRACT_INIT    = %10000000
+END             = %00000010
+END_INIT        = %10000010
+
     .org $8302                      ;  Start game loop for
 GameLoopAttract:                    ;    ATTRACT gamestate.
 
@@ -13,71 +19,74 @@ GameLoopAttract:                    ;    ATTRACT gamestate.
     .org $8402                      ;  Start game loop for
 GameLoopEnd:                        ;    END gamestate.
 
+    LDY framecounter                ;  Set scroll_y with
+    LDA sine, y                     ;    incremental values from
+    STA scroll_y                    ;    sine lookup table.
+
     JMP GameLoop                    ;  End game loop.
 
     .org $8502                      ;  Start NMI loop for
 NMIAttractInit:                     ;    ATTRACT gamestate.
 
-    LDA gamestate                   ;  If init flag on gamestate
-    AND #%10000000                  ;    is 0, branch to post-
-    BEQ NMIAttract                  ;    init ATTRACT code.
+    LDA gamestate                   ;  Branch to NMIAttract if
+    AND #%10000000                  ;    gamestate init flag is
+    BEQ NMIAttract                  ;    0. Otherwise...
 
-    LDX #HIGH(attract_pal)
-    LDY #LOW(attract_pal)
-    LDA #PALETTE_BG
-    JSR LoadPalette
+    LDX #HIGH(attract_pal)          ;  Load ATTRACT palette.
+    LDY #LOW(attract_pal)           ;
+    LDA #PALETTE_BG                 ;
+    JSR LoadPalette                 ;
 
-    LDA gamestate                   ;  Clear init flag on
-    AND #%01111111                  ;    gamestate.
+    JSR ResetBackgroundPatch        ;  Reset BG patch variables.
+
+    JSR ClearGamestateInitFlag      ;  Clear gamestate init flag.
+
+    JMP NMIDone                     ;  End this NMI loop.
+
+NMIAttract:                         ;  Continue ATTRACT NMI.
+
+    LDX #HIGH(attract_txt)          ;  Load ATTRACT text as a
+    LDY #LOW(attract_txt)           ;    background patch.
+    JSR LoadBackground_Patch        ;
+
+    LDA framecounter                     ;  Set gamestate to END_INIT
+    BNE NMIAttractDone              ;    after 1 second has
+    LDA #END_INIT                   ;    passed.
     STA gamestate                   ;
 
-    JMP NMIDone                     ;  End NMI loop.
-
-NMIAttract:                         ;  Initialize ATTRACT.
-
-    LDX #HIGH(attract_txt)
-    LDY #LOW(attract_txt)
-    JSR LoadBackground_Patch
-
-    LDA framecounter
-    BNE NMIAttractDone
-    LDA #%10000010
-    STA gamestate
-
-NMIAttractDone:                     ;  End NMI loop.
+NMIAttractDone:                     ;  End this NMI loop.
     JMP NMIDone                     ; 
 
     .org $8602                      ;  Start NMI loop for END
 NMIEndInit:                         ;    gamestate.
 
-    LDA gamestate                   ;  If init flag on gamestate
-    AND #%10000000                  ;    is 0, branch to post-
-    BEQ NMIEnd                      ;    init END code.
+    LDA gamestate                   ;  Branch to NMIEnd if 
+    AND #%10000000                  ;    gamestate init flag is
+    BEQ NMIEnd                      ;    0. Otherwise...
 
-    LDX #HIGH(end_pal)
-    LDY #LOW(end_pal)
-    LDA #PALETTE_BG
-    JSR LoadPalette
+    LDX #HIGH(end_pal)              ;  Load END palette.
+    LDY #LOW(end_pal)               ;
+    LDA #PALETTE_BG                 ;
+    JSR LoadPalette                 ;
 
-    LDA gamestate                   ;  Clear init flag on
-    AND #%01111111                  ;    gamestate.
+    JSR ResetBackgroundPatch        ;  Reset BG patch variables.
+
+    JSR ClearGamestateInitFlag      ;  Clear gamestate init flag.
+
+    JMP NMIDone                     ;  End this NMI loop.
+
+NMIEnd:                             ;  Continue END NMI.
+
+    LDX #HIGH(end_txt)              ;  Load END text as a
+    LDY #LOW(end_txt)               ;    background patch.
+    JSR LoadBackground_Patch        ;
+
+    LDA framecounter                      ;  Set gamestate to 
+    BNE NMIEndDone                  ;    ATTRACT_INIT after 1
+    LDA #ATTRACT_INIT               ;    second has passed.
     STA gamestate                   ;
 
-    JMP NMIDone                     ;  End NMI loop.
-
-NMIEnd:                             ; 
-
-    LDX #HIGH(end_txt)
-    LDY #LOW(end_txt)
-    JSR LoadBackground_Patch
-
-    LDA framecounter
-    CMP #$80
-    BNE NMIEndDone
-    LDA #%10000000
-    STA gamestate
-
-NMIEndDone:                         ;  End NMI loop.
+NMIEndDone:                         ;  End this NMI loop.
     JMP NMIDone                     ; 
 
 gameloop_table:                     ;  List address byte (minus

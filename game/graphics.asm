@@ -43,7 +43,7 @@ attract_txt:                        ;  Import "ATTRACT" at
     .db "ATTRACT"
 
 end_txt:                            ;  Import "END" at $2082.
-    .db $20, $82, %01100010         ;    Pop tiles in and wait.
+    .db $20, $82, %01100110         ;    Pop tiles in and wait.
     .db "END    "
 
 game_txt:                           ;  Import "GAME" at $2082.
