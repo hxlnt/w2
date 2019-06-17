@@ -23,17 +23,10 @@ steps:
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
 
 - task: Bash@3
-  displayName: 'Check build folder'
-  inputs:
-    targetType: 'inline'
-    script: 'cd build && ls'
-  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
-
-- task: Bash@3
   displayName: 'Remove existing screenshot if present.'
   inputs:
     targetType: 'inline'
-    script: 'rm screenshot.png'
+    script: 'cd build && rm screenshot.png'
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
   continueOnError: true
 
