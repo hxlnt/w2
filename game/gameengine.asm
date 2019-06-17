@@ -19,9 +19,9 @@ GameLoopAttract:                    ;    ATTRACT gamestate.
     .org $8402                      ;  Start game loop for
 GameLoopEnd:                        ;    END gamestate.
 
-    LDY framecounter                ;  Set scroll_y with
-    LDA sine, y                     ;    incremental values from
-    STA scroll_y                    ;    sine lookup table.
+    LDA framecounter                ;  Set scroll_x equal to
+    ;LDA sine, y                    ;    framecounter.
+    STA scroll_x                    ;    
 
     JMP GameLoop                    ;  End game loop.
 
