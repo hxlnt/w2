@@ -20,8 +20,7 @@ GameLoopAttract:                    ;    ATTRACT gamestate.
 GameLoopEnd:                        ;    END gamestate.
 
     LDA framecounter                ;  Set scroll_x equal to
-    ;LDA sine, y                    ;    framecounter.
-    STA scroll_x                    ;    
+    STA scroll_x                    ;    framecounter.
 
     JMP GameLoop                    ;  End game loop.
 
