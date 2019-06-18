@@ -69,6 +69,10 @@ steps:
   displayName: 'Run FCEUX'
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
 
+- task: Delay@1
+  inputs:
+    delayForMinutes: '1' 
+
 - task: Bash@3
   displayName: 'Configure git'
   inputs:
