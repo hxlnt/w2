@@ -26,7 +26,7 @@ steps:
   displayName: 'Remove existing screenshot if present.'
   inputs:
     targetType: 'inline'
-    script: 'cd build && rm screenshot.png'
+    script: 'rm build/screenshot.png'
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
   continueOnError: true
 
@@ -74,7 +74,7 @@ steps:
   displayName: 'Configure git'
   inputs:
     targetType: 'inline'
-    script: git config user.email "partytimehexcellent@gmail.com" && git config user.name "w2 Build Pipeline"
+    script: git config user.email "partytimehexcellent@gmail.com" && git config user.name "w2 Build Pipeline && cd D:\a\1\s\build\ && ls "
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
 
 - task: Bash@3
