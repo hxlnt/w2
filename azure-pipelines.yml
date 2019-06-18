@@ -73,7 +73,7 @@ steps:
   displayName: 'Configure git'
   inputs:
     targetType: 'inline'
-    script: git config user.email "partytimehexcellent@gmail.com" && git config user.name "w2 Build Pipeline" && cd D:\a\1\s\build\ && ls
+    script: git config user.email "partytimehexcellent@gmail.com" && git config user.name "w2 Build Pipeline" && cd D:/a/1/s/build && ls
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
 
 - task: Bash@3
