@@ -26,7 +26,7 @@ steps:
   displayName: 'Remove existing screenshot if present.'
   inputs:
     targetType: 'inline'
-    script: 'cd build && rm screenshot.png'
+    script: 'rm build/screenshot.png'
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
   continueOnError: true
 
@@ -64,10 +64,16 @@ steps:
     destinationFolder: build/fceux
     cleanDestinationFolder: false
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
-  continueOnError: true
 
 - powershell: Start-Process D:\a\1\s\build\fceux\fceux.exe "-lua D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.nes"
   displayName: 'Run FCEUX'
+  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
+
+- task: Bash@3
+  displayName: 'Confirm screenshot was created'
+  inputs:
+    targetType: 'inline'
+    script: sleep 30 && cd D:/a/1/s/build && ls && cat screenshot.png
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
 
 - task: Bash@3
@@ -90,6 +96,6 @@ steps:
     PRBRANCH: $(System.PullRequest.SourceBranch)
   inputs:
     targetType: 'inline'
-    script: echo $PRBRANCH && cd D:/a/1/s/ && ls && git add . && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin HEAD:$PRBRANCH
+    script: echo $PRBRANCH && cd D:/a/1/s/ && ls && git add --all && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin HEAD:$PRBRANCH
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
   continueOnError: true
